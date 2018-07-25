@@ -16,9 +16,9 @@ import (
 	"github.com/gobuffalo/pop/nulls"
 	"log"
 
-	apimodels "github.com/candig/go-model-service/variant-service/api/models"
-	"github.com/candig/go-model-service/variant-service/api/restapi/operations"
-	datamodels "github.com/candig/go-model-service/variant-service/data/models"
+	apimodels "github.com/CanDIG/go-model-service/variant-service/api/models"
+	"github.com/CanDIG/go-model-service/variant-service/api/restapi/operations"
+	datamodels "github.com/CanDIG/go-model-service/variant-service/data/models"
 )
 
 //go:generate swagger generate server --target .. --name variant-service --spec ../swagger.yml
