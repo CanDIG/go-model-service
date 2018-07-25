@@ -1,6 +1,8 @@
 # Go Model Service
 
-Based on Jonathan Dursi's [OpenAPI variant service demo](https://github.com/ljdursi/openapi_calls_example), this toy service demonstrates the go-swagger/pop stack with CanDIG API best practices.
+[![Go Report Card](https://goreportcard.com/badge/github.com/candig/go-model-service)](https://goreportcard.com/report/github.com/candig/go-model-service)
+
+This toy service demonstrates the go-swagger/pop stack with CanDIG API best practices.
 
 ## Stack
 
