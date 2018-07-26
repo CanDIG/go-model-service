@@ -1,3 +1,4 @@
+
 # Go Model Service
 
 Based on Jonathan Dursi's [OpenAPI variant service demo](https://github.com/CanDIG/openapi_calls_example), this toy service demonstrates the go-swagger/pop stack with CanDIG API best practices.
@@ -22,21 +23,15 @@ Prior to installing new programs, run `$ which <program-name>` to check if it is
 2. [Install gcc](https://gcc.gnu.org/install/).
 3. [Install sqlite3](https://www.tutorialspoint.com/sqlite/sqlite_installation.htm).
 4. [Install dep](https://golang.github.io/dep/docs/installation.html)
-5. [Install go-swagger](https://goswagger.io/install.html) (releases 0.15.0 or later strongly recommended.)
-6. [Install pop](https://github.com/gobuffalo/pop). See the [Unnoficial Pop Book](https://andrew-sledge.gitbooks.io/the-unofficial-pop-book/content/installation.html) for instructions. Make sure to include sqlite3 support with `tags sqlite` in your installation commands, as follows:
-  ```
-  $ go get -u -v -tags sqlite github.com/gobuffalo/pop/...
-  $ go install -tags sqlite github.com/gobuffalo/pop/soda
-  ```
-7. Install this go-model-service as desired:
+5. Install this go-model-service as desired:
   * Into a local directory of your choosing with
   `$ git checkout https://github.com/CanDIG/go-model-service.git`
   * Into your go environment with 
   `$ go get github.com/CanDIG/go-model-service`
   (installation directory will be `$GOPATH/src`).
-8. In the root directory of this project (ie. the directory where `Gopkg.lock` and `Gopkg.toml` are found), run 
-`$ dep ensure`
-to install all project import dependencies in the new `vendor` directory.
+6. In the root directory of this project (ie. the directory where `Gopkg.lock` and `Gopkg.toml` are found), run 
+  `$ dep ensure`
+  to install all project import dependencies in the new `vendor` directory.
 
 ## Running The Service
 
@@ -46,3 +41,19 @@ $ cd variant-service/api
 $ go build -tags sqlite ./variant-service/api/cmd/project-server/main.go
 $ ./main --port=3000
 ```
+
+## For Developers
+
+### Installing Dev Tools
+
+In addition to all steps in the Installation section above, install the following tools:
+1. [Install go-swagger](https://goswagger.io/install.html) (release 0.15.0 strongly recommended.)
+2. [Install pop](https://github.com/gobuffalo/pop). See the [Unnoficial Pop Book](https://andrew-sledge.gitbooks.io/the-unofficial-pop-book/content/installation.html) for instructions. Make sure to include sqlite3 support with `tags sqlite` in your installation commands, as follows:
+  ```
+  $ go get -u -v -tags sqlite github.com/gobuffalo/pop/...
+  $ go install -tags sqlite github.com/gobuffalo/pop/soda
+  ```
+
+### Instructions for Development
+
+Coming soon!
