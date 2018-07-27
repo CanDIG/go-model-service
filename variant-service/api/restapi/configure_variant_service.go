@@ -170,7 +170,7 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 		}
 
 		newVariant, errPayload := transformVariantToDataModel(*params.Variant)
-		if err != nil {
+		if errPayload != nil {
 			return operations.NewMainPostVariantInternalServerError().WithPayload(errPayload)
 		}
 
