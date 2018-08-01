@@ -12,6 +12,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 	"github.com/tylerb/graceful"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/pop/nulls"
@@ -150,11 +151,13 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 			return operations.NewMainPostVariantInternalServerError().WithPayload(errPayload)
 		}
 
-		_, err = getVariantByID(params.Variant.ID.String(), tx)
-		if err == nil { // TODO not actually a great check
-			logError(nil, 405,"api.MainPostVariantHandler",
-				"Variant ID already exists in database; cannot overwrite with put")
-			errPayload := &apimodels.Error{Code: 40501, Message: swag.String("")} //TODO message
+		extantVariant, _ := getVariantByID(params.Variant.ID.String(), tx)
+		if extantVariant != nil {
+			message := "This variant already exists in the database. " +
+				"It cannot be overwritten with POST; please use PUT instead."
+
+			logError(nil, 405,"api.MainPostVariantHandler", message)
+			errPayload := &apimodels.Error{Code: 405001, Message: &message}
 			return operations.NewMainPostVariantMethodNotAllowed().WithPayload(errPayload)
 		}
 

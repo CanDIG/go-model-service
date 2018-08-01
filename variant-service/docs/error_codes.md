@@ -6,6 +6,15 @@ The first 3 digits of the error code are the HTTP status code that the error is 
 
 The code descriptions provided here are not intended to replace the error messages returned alongside them, but rather to facilitate automation of error handling and/or logging on the client side. Therefore they may be either identical to or more descriptive than the messages returned in error payloads.
 
+## 400--- Codes
+
+##### 405001
+
+Attempted to modify an existing record with POST (record creation), which should only be done with PUT (record modification).
+
+When posting a new record, be sure not to provide a record ID in the POST request. The ID is generated internally and is read-only.
+
+
 ## 500--- Codes
 
 ##### 500000
