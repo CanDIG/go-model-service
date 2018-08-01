@@ -4,24 +4,23 @@ package restapi
 
 import (
 	"crypto/tls"
+	"fmt"
+	"log"
 	"net/http"
 
-	errors "github.com/go-openapi/errors"
-	runtime "github.com/go-openapi/runtime"
-	middleware "github.com/go-openapi/runtime/middleware"
-	strfmt "github.com/go-openapi/strfmt"
-	graceful "github.com/tylerb/graceful"
-	"github.com/go-openapi/swag"
-
+	"github.com/go-openapi/errors"
+	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/strfmt"
+	"github.com/tylerb/graceful"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/pop/nulls"
-	"log"
-
 
 	apimodels "github.com/CanDIG/go-model-service/variant-service/api/models"
-	"github.com/CanDIG/go-model-service/variant-service/api/restapi/operations"
 	datamodels "github.com/CanDIG/go-model-service/variant-service/data/models"
-	"fmt"
+	"github.com/CanDIG/go-model-service/variant-service/api/restapi/operations"
+
+	customErrors "github.com/CanDIG/go-model-service/tools/errors"
 )
 
 //go:generate swagger generate server --target .. --name variant-service --spec ../swagger.yml
@@ -47,7 +46,7 @@ func transformVariantToAPIModel(dataVariant datamodels.Variant) (*apimodels.Vari
 	if !ok {
 		logError(nil, 500,"transformVariantToAPIModel",
 			"Transformation of non-nullable field Variant.Start from data to api model fails to yield valid int")
-		errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
+		errPayload := customErrors.DefaultInternalServerError()
 		return nil, errPayload
 	}
 	transformedStart := int64(startNonNullable)
@@ -65,7 +64,7 @@ func transformVariantToAPIModel(dataVariant datamodels.Variant) (*apimodels.Vari
 	if err != nil {
 		logError(err, 500,"transformVariantToAPIModel",
 			"API Schema validation for API-model Variant failed upon transformation")
-		errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
+		errPayload := customErrors.DefaultInternalServerError()
 		return apiVariant, errPayload
 	}
 
@@ -107,7 +106,7 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 		if err != nil {
 			logError(err, 500,"api.MainGetVariantHandler",
 				"Failed to connect to database: development")
-			errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
+			errPayload := customErrors.DefaultInternalServerError()
 			return operations.NewMainGetVariantsInternalServerError().WithPayload(errPayload)
 		}
 
@@ -119,7 +118,7 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 			// TODO does this need to be panic?
 			logError(err, 500,"api.MainGetVariantHandler",
 				"Problems getting variants from database")
-			errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
+			errPayload := customErrors.DefaultInternalServerError()
 			return operations.NewMainGetVariantsInternalServerError().WithPayload(errPayload)
 		}
 
@@ -147,7 +146,7 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 		if err != nil {
 			logError(err, 500,"api.MainPostVariantHandler",
 				"Failed to connect to database: development")
-			errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
+			errPayload := customErrors.DefaultInternalServerError()
 			return operations.NewMainPostVariantInternalServerError().WithPayload(errPayload)
 		}
 
@@ -168,15 +167,15 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 		if err != nil {
 			logError(err, 500,"api.MainPostVariantHandler",
 				"ValidateAndCreate into database failed")
-			errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
+			errPayload := customErrors.DefaultInternalServerError()
 			return operations.NewMainPostVariantInternalServerError().WithPayload(errPayload)
 		}
 
-		dataVariant, err := getVariantByID(newVariant.ID.String(), tx) //TODO ID
+		dataVariant, err := getVariantByID(newVariant.ID.String(), tx)
 		if err != nil {
 			logError(err, 500,"api.MainPostVariantHandler, getVariantByID(string)",
 				"Failed to get variant by ID from database immediately following its creation")
-			errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
+			errPayload := customErrors.DefaultInternalServerError()
 			return operations.NewMainPostVariantInternalServerError().WithPayload(errPayload)
 		}
 
