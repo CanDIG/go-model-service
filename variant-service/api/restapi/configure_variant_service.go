@@ -26,6 +26,15 @@ import (
 
 //go:generate swagger generate server --target .. --name variant-service --spec ../swagger.yml
 
+func logError(err error, httpCode int32, locationFunction string, message string) {
+	log.Printf("%d ERROR: %s \n" +
+			"IN: configure_variant_service.go: %s \n",
+			httpCode, message, locationFunction)
+	if err != nil {
+		log.Println("ERROR MESSAGE FOLLOWS:\n" + err.Error())
+	}
+}
+
 func getVariantByID(id string, tx *pop.Connection) (*datamodels.Variant, error) {
 	variant := &datamodels.Variant{}
 	err := tx.Find(variant, id)
@@ -36,9 +45,8 @@ func getVariantByID(id string, tx *pop.Connection) (*datamodels.Variant, error) 
 func transformVariantToAPIModel(dataVariant datamodels.Variant) (*apimodels.Variant, *apimodels.Error) {
 	startNonNullable, ok := dataVariant.Start.Interface().(int) // TODO assert as int64?
 	if !ok {
-		log.Println(
-			"500: Transformation of non-nullable field Variant.Start from data to api model fails to yield valid int\n" +
-				"In: transformVariantToAPIModel\n")
+		logError(nil, 500,"transformVariantToAPIModel",
+			"Transformation of non-nullable field Variant.Start from data to api model fails to yield valid int")
 		errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
 		return nil, errPayload
 	}
@@ -55,12 +63,8 @@ func transformVariantToAPIModel(dataVariant datamodels.Variant) (*apimodels.Vari
 	// TODO should this validation step be exported to transformations package as well?
 	err := apiVariant.Validate(strfmt.NewFormats())
 	if err != nil {
-		// TODO generalize/modularize error logging in a method
-		log.Println(
-			"500: API Schema validation for API-model Variant failed upon transformation\n" +
-				"In: transformVariantToAPIModel\n" +
-				"Error message follows:")
-		log.Println(err)
+		logError(err, 500,"transformVariantToAPIModel",
+			"API Schema validation for API-model Variant failed upon transformation")
 		errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
 		return apiVariant, errPayload
 	}
@@ -101,11 +105,8 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 	api.MainGetVariantsHandler = operations.MainGetVariantsHandlerFunc(func(params operations.MainGetVariantsParams) middleware.Responder {
 		tx, err := pop.Connect("development")
 		if err != nil {
-			log.Println(
-				"500 ERROR: Failed to connect to database: development\n" +
-					"In: api.MainGetVariantHandler\n" +
-					"Error message follows:")
-			log.Println(err)
+			logError(err, 500,"api.MainGetVariantHandler",
+				"Failed to connect to database: development")
 			errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
 			return operations.NewMainGetVariantsInternalServerError().WithPayload(errPayload)
 		}
@@ -115,17 +116,13 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 		dataVariants := []datamodels.Variant{}
 		err = query.All(&dataVariants)
 		if err != nil {
-			log.Println( // TODO does this need to be panic?
-				"500 ERROR: Problems getting variants from database\n" +
-					"In: api.MainGetVariantHandler\n" +
-					"Error message follows:")
-			log.Println(err)
+			// TODO does this need to be panic?
+			logError(err, 500,"api.MainGetVariantHandler",
+				"Problems getting variants from database")
 			errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
 			return operations.NewMainGetVariantsInternalServerError().WithPayload(errPayload)
 		}
 
-		// TODO variants of datamodel, not model structure
-		// Iterate through all and convert via a conversion method
 		apiVariants := []*apimodels.Variant{}
 		for _, dataVariant := range dataVariants {
 			apiVariant, errPayload := transformVariantToAPIModel(dataVariant)
@@ -140,31 +137,24 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 	api.MainPostVariantHandler = operations.MainPostVariantHandlerFunc(func(params operations.MainPostVariantParams) middleware.Responder {
 		err := params.Variant.Validate(strfmt.NewFormats())
 		if err != nil {
-			log.Println(
-				"400: API Schema validation for Variant param failed\n" +
-					"In: api.MainPostVariantHandler\n" +
-					"Error message follows:")
-			log.Println(err)
+			logError(err, 400,"api.MainPostVariantHandler",
+				"API Schema validation for Variant param failed")
 			errPayload := &apimodels.Error{Code: 40001, Message: swag.String("")} //TODO message
 			return operations.NewMainPostVariantBadRequest().WithPayload(errPayload)
 		}
 
 		tx, err := pop.Connect("development")
 		if err != nil {
-			log.Println(
-				"500 ERROR: Failed to connect to database: development\n" +
-					"In: api.MainPostVariantHandler\n" +
-					"Error message follows:")
-			log.Println(err)
+			logError(err, 500,"api.MainPostVariantHandler",
+				"Failed to connect to database: development")
 			errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
 			return operations.NewMainPostVariantInternalServerError().WithPayload(errPayload)
 		}
 
 		_, err = getVariantByID(params.Variant.ID.String(), tx)
 		if err == nil { // TODO not actually a great check
-			log.Println(
-				"405: Variant ID already exists in database; cannot overwrite with put\n" +
-					"In: api.MainPostVariantHandler, getVariantByID(string)")
+			logError(nil, 405,"api.MainPostVariantHandler",
+				"Variant ID already exists in database; cannot overwrite with put")
 			errPayload := &apimodels.Error{Code: 40501, Message: swag.String("")} //TODO message
 			return operations.NewMainPostVariantMethodNotAllowed().WithPayload(errPayload)
 		}
@@ -176,22 +166,16 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 
 		_, err = tx.ValidateAndCreate(newVariant)
 		if err != nil {
-			log.Println(
-				"500 ERROR: ValidateAndCreate into database failed\n" +
-					"In: api.MainPostVariantHandler\n" +
-					"Error message follows:")
-			log.Println(err)
+			logError(err, 500,"api.MainPostVariantHandler",
+				"ValidateAndCreate into database failed")
 			errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
 			return operations.NewMainPostVariantInternalServerError().WithPayload(errPayload)
 		}
 
 		dataVariant, err := getVariantByID(newVariant.ID.String(), tx) //TODO ID
 		if err != nil {
-			log.Println(
-				"500 ERROR: Failed to get variant by ID from database immediately following its creation\n" +
-					"In: api.MainPostVariantHandler, getVariantByID(string)\n" +
-					"Error message follows:")
-			log.Println(err)
+			logError(err, 500,"api.MainPostVariantHandler, getVariantByID(string)",
+				"Failed to get variant by ID from database immediately following its creation")
 			errPayload := &apimodels.Error{Code: 50001, Message: swag.String("")} //TODO message
 			return operations.NewMainPostVariantInternalServerError().WithPayload(errPayload)
 		}
