@@ -60,50 +60,6 @@ func (o *MainGetVariantsOK) WriteResponse(rw http.ResponseWriter, producer runti
 
 }
 
-// MainGetVariantsUnprocessableEntityCode is the HTTP code returned for type MainGetVariantsUnprocessableEntity
-const MainGetVariantsUnprocessableEntityCode int = 422
-
-/*MainGetVariantsUnprocessableEntity Query parameters are unprocessable
-
-swagger:response mainGetVariantsUnprocessableEntity
-*/
-type MainGetVariantsUnprocessableEntity struct {
-
-	/*
-	  In: Body
-	*/
-	Payload *models.Error `json:"body,omitempty"`
-}
-
-// NewMainGetVariantsUnprocessableEntity creates MainGetVariantsUnprocessableEntity with default headers values
-func NewMainGetVariantsUnprocessableEntity() *MainGetVariantsUnprocessableEntity {
-
-	return &MainGetVariantsUnprocessableEntity{}
-}
-
-// WithPayload adds the payload to the main get variants unprocessable entity response
-func (o *MainGetVariantsUnprocessableEntity) WithPayload(payload *models.Error) *MainGetVariantsUnprocessableEntity {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the main get variants unprocessable entity response
-func (o *MainGetVariantsUnprocessableEntity) SetPayload(payload *models.Error) {
-	o.Payload = payload
-}
-
-// WriteResponse to the client
-func (o *MainGetVariantsUnprocessableEntity) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
-	rw.WriteHeader(422)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
-	}
-}
-
 // MainGetVariantsInternalServerErrorCode is the HTTP code returned for type MainGetVariantsInternalServerError
 const MainGetVariantsInternalServerErrorCode int = 500
 

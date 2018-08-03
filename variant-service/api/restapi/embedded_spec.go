@@ -68,12 +68,6 @@ func init() {
               }
             }
           },
-          "422": {
-            "description": "Query parameters are unprocessable",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
           "500": {
             "description": "Internal error",
             "schema": {
@@ -322,12 +316,6 @@ func init() {
               "items": {
                 "$ref": "#/definitions/Variant"
               }
-            }
-          },
-          "422": {
-            "description": "Query parameters are unprocessable",
-            "schema": {
-              "$ref": "#/definitions/Error"
             }
           },
           "500": {

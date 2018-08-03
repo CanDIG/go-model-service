@@ -124,15 +124,6 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 
 		if params.Chromosome != nil {
 			conditions = fmt.Sprintf(addAND(conditions) + "chromosome = '%s'", *params.Chromosome)
-		} else {
-			// TODO do we want to do this? If so, add 422001 to error code doc. If not, remove here and in swagger.yml
-			if params.Start != nil || params.End != nil {
-				message := "The 'chromosome' to query on was not provided, but 'start'- and 'end'-values were. " +
-					"Please either provide a 'chromosome', or query for all variants by leaving 'start' and 'end' blank."
-				logError(nil, 422, "api.MainGetVariantsHandler", message)
-				errPayload := &apimodels.Error{Code: 422001, Message: &message}
-				return operations.NewMainGetVariantsUnprocessableEntity().WithPayload(errPayload)
-			}
 		}
 		if params.Start != nil {
 			conditions = fmt.Sprintf(addAND(conditions) + "start >= '%d'", *params.Start)

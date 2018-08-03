@@ -51,10 +51,6 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Variant'
-        422:
-          description: Query parameters are unprocessable
-          schema:
-            $ref: "#/definitions/Error"
         500:
           description: Internal error
           schema:
