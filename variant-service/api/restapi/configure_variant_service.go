@@ -38,7 +38,7 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 		return middleware.NotImplemented("operation .GetCalls has not yet been implemented")
 	})
 	api.GetIndividualsHandler = operations.GetIndividualsHandlerFunc(func(params operations.GetIndividualsParams) middleware.Responder {
-		return middleware.NotImplemented("operation .GetIndividuals has not yet been implemented")
+		return handlers.GetIndividuals(params)
 	})
 	api.GetIndividualsByVariantHandler = operations.GetIndividualsByVariantHandlerFunc(func(params operations.GetIndividualsByVariantParams) middleware.Responder {
 		return middleware.NotImplemented("operation .GetIndividualsByVariant has not yet been implemented")
@@ -62,10 +62,10 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 		return middleware.NotImplemented("operation .PostCall has not yet been implemented")
 	})
 	api.PostIndividualHandler = operations.PostIndividualHandlerFunc(func(params operations.PostIndividualParams) middleware.Responder {
-		return middleware.NotImplemented("operation .PostIndividual has not yet been implemented")
+		return handlers.PostIndividual(params)
 	})
 	api.PostVariantHandler = operations.PostVariantHandlerFunc(func(params operations.PostVariantParams) middleware.Responder {
-		return handlers.PostVariants(params)
+		return handlers.PostVariant(params)
 	})
 
 	api.ServerShutdown = func() {}

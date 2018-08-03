@@ -47,16 +47,31 @@ Some examples for correctly-formatted CURL requests to the server:
 
 #### GET
 
-```
-$ curl -i "localhost:3000/variants?chromosome=chr1&start=3&end=105"
-```
+##### GET Individuals
+
+all
+`$ curl -i "localhost:3000/individuals`
+
+by ID
+`$ curl -i "localhost:3000/individuals/0d583066-039a-4f61-832e-b0f8f5156f7d"`
+
+##### GET Variants
+
+by ID
+`$ curl -i "localhost:3000/variants/0d583066-039a-4f61-832e-b0f8f5156f7d"`
+
+by parameter
+`$ curl -i "localhost:3000/variants?chromosome=chr1&start=3&end=105"`
 
 #### POST
 
-```
-$ curl -i localhost:3000/variants -d "{\"name\":\"rs7054258\", \"chromosome\":\"chr1\", \"start\":5, \"ref\":\"A\", \"alt\":\"T\"}" -H 'Content-Type: application/json'
-$ curl -i localhost:3000/variants -d "{\"name\":\"rs8054208\", \"chromosome\":\"chr1\", \"start\":87, \"ref\":\"C\", \"alt\":\"G\"}" -H 'Content-Type: application/json'
-```
+##### POST Individuals
+
+`$ curl -i localhost:3000/individuals -d "{\"description\":\"Subject 17\"}" -H 'Content-Type: application/json'`
+
+##### POST Variants
+
+`$ curl -i localhost:3000/variants -d "{\"name\":\"rs7054258\", \"chromosome\":\"chr1\", \"start\":5, \"ref\":\"A\", \"alt\":\"T\"}" -H 'Content-Type: application/json'`
 
 ## For Developers
 

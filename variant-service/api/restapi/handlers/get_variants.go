@@ -19,10 +19,11 @@ import (
 // It rejects get-all requests, as such a request would, in a production service, return a prohibitively
 // large amount of data and would likely only be entered in error or in malice.
 func GetVariants(params operations.GetVariantsParams) middleware.Responder {
+	funcName := "handlers.GetVariants"
+
 	tx, err := pop.Connect("development")
 	if err != nil {
-		errors.Log(err, 500,"restapi.api.MainGetVariantHandler",
-			"Failed to connect to database: development")
+		errors.Log(err, 500, funcName,"Failed to connect to database: development")
 		errPayload := errors.DefaultInternalServerError()
 		return operations.NewGetVariantsInternalServerError().WithPayload(errPayload)
 	}
@@ -46,15 +47,13 @@ func GetVariants(params operations.GetVariantsParams) middleware.Responder {
 	} else {
 		message := "Forbidden to query for all variants. " +
 			"Please provide parameters in the query string for 'chromosome', 'start', and/or 'end'."
-		errors.Log(nil, 403,"api.MainGetVariantsHandler", message)
+		errors.Log(nil, 403, funcName, message)
 		errPayload := &apimodels.Error{Code: 403001, Message: &message}
 		return operations.NewGetVariantsForbidden().WithPayload(errPayload)
 	}
 
 	if err != nil {
-		// TODO does this need to be panic?
-		errors.Log(err, 500,"restapi.api.MainGetVariantHandler",
-			"Problems getting variants from database")
+		errors.Log(err, 500, funcName, "Problems getting variants from database")
 		errPayload := errors.DefaultInternalServerError()
 		return operations.NewGetVariantsInternalServerError().WithPayload(errPayload)
 	}
