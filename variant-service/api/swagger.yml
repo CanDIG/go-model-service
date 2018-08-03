@@ -26,6 +26,7 @@ produces:
 schemes:
 - http
 swagger: "2.0" # version used by go-swagger tool
+
 paths:
   /individuals:
     post:
@@ -85,6 +86,7 @@ paths:
           description: Internal error
           schema:
             $ref: "#/definitions/Error"
+
   /variants:
     get:
       operationId: get_variants
@@ -146,6 +148,7 @@ paths:
           description: Internal error - Variant not created
           schema:
             $ref: "#/definitions/Error"
+
   /variants/{variant_id}:
     get:
       operationId: get_one_variant
