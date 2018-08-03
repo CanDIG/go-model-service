@@ -114,7 +114,7 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 	api.MainGetVariantsHandler = operations.MainGetVariantsHandlerFunc(func(params operations.MainGetVariantsParams) middleware.Responder {
 		tx, err := pop.Connect("development")
 		if err != nil {
-			logError(err, 500,"api.MainGetVariantHandler",
+			logError(err, 500,"api.MainGetVariantsHandler",
 				"Failed to connect to database: development")
 			errPayload := customErrors.DefaultInternalServerError()
 			return operations.NewMainGetVariantsInternalServerError().WithPayload(errPayload)
@@ -137,12 +137,16 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 			query := tx.Where(conditions)
 			err = query.All(&dataVariants)
 		} else {
-			err = tx.All(&dataVariants)
+			message := "Forbidden to query for all variants. " +
+				"Please provide parameters in the query string for 'chromosome', 'start', and/or 'end'."
+			logError(nil, 403,"api.MainGetVariantsHandler", message)
+			errPayload := &apimodels.Error{Code: 403001, Message: &message}
+			return operations.NewMainGetVariantsForbidden().WithPayload(errPayload)
 		}
 
 		if err != nil {
 			// TODO does this need to be panic?
-			logError(err, 500,"api.MainGetVariantHandler",
+			logError(err, 500,"api.MainGetVariantsHandler",
 				"Problems getting variants from database")
 			errPayload := customErrors.DefaultInternalServerError()
 			return operations.NewMainGetVariantsInternalServerError().WithPayload(errPayload)
