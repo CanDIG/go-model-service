@@ -17,18 +17,18 @@ import (
 	strfmt "github.com/go-openapi/strfmt"
 )
 
-// NewMainGetVariantsParams creates a new MainGetVariantsParams object
+// NewGetVariantsParams creates a new GetVariantsParams object
 // no default values defined in spec.
-func NewMainGetVariantsParams() MainGetVariantsParams {
+func NewGetVariantsParams() GetVariantsParams {
 
-	return MainGetVariantsParams{}
+	return GetVariantsParams{}
 }
 
-// MainGetVariantsParams contains all the bound params for the main get variants operation
+// GetVariantsParams contains all the bound params for the get variants operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters main.get_variants
-type MainGetVariantsParams struct {
+// swagger:parameters get_variants
+type GetVariantsParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
@@ -53,8 +53,8 @@ type MainGetVariantsParams struct {
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewMainGetVariantsParams() beforehand.
-func (o *MainGetVariantsParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewGetVariantsParams() beforehand.
+func (o *GetVariantsParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r
@@ -82,7 +82,7 @@ func (o *MainGetVariantsParams) BindRequest(r *http.Request, route *middleware.M
 	return nil
 }
 
-func (o *MainGetVariantsParams) bindChromosome(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *GetVariantsParams) bindChromosome(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
@@ -103,7 +103,7 @@ func (o *MainGetVariantsParams) bindChromosome(rawData []string, hasKey bool, fo
 	return nil
 }
 
-func (o *MainGetVariantsParams) validateChromosome(formats strfmt.Registry) error {
+func (o *GetVariantsParams) validateChromosome(formats strfmt.Registry) error {
 
 	if err := validate.Pattern("chromosome", "query", (*o.Chromosome), `^[a-zA-Z0-9]*$`); err != nil {
 		return err
@@ -112,7 +112,7 @@ func (o *MainGetVariantsParams) validateChromosome(formats strfmt.Registry) erro
 	return nil
 }
 
-func (o *MainGetVariantsParams) bindEnd(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *GetVariantsParams) bindEnd(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
@@ -137,7 +137,7 @@ func (o *MainGetVariantsParams) bindEnd(rawData []string, hasKey bool, formats s
 	return nil
 }
 
-func (o *MainGetVariantsParams) validateEnd(formats strfmt.Registry) error {
+func (o *GetVariantsParams) validateEnd(formats strfmt.Registry) error {
 
 	if err := validate.MinimumInt("end", "query", int64(*o.End), 1, false); err != nil {
 		return err
@@ -146,7 +146,7 @@ func (o *MainGetVariantsParams) validateEnd(formats strfmt.Registry) error {
 	return nil
 }
 
-func (o *MainGetVariantsParams) bindStart(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *GetVariantsParams) bindStart(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
@@ -171,7 +171,7 @@ func (o *MainGetVariantsParams) bindStart(rawData []string, hasKey bool, formats
 	return nil
 }
 
-func (o *MainGetVariantsParams) validateStart(formats strfmt.Registry) error {
+func (o *GetVariantsParams) validateStart(formats strfmt.Registry) error {
 
 	if err := validate.MinimumInt("start", "query", int64(*o.Start), 1, false); err != nil {
 		return err

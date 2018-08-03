@@ -15,18 +15,18 @@ import (
 	models "github.com/CanDIG/go-model-service/variant-service/api/models"
 )
 
-// NewMainPostVariantParams creates a new MainPostVariantParams object
+// NewPostVariantParams creates a new PostVariantParams object
 // no default values defined in spec.
-func NewMainPostVariantParams() MainPostVariantParams {
+func NewPostVariantParams() PostVariantParams {
 
-	return MainPostVariantParams{}
+	return PostVariantParams{}
 }
 
-// MainPostVariantParams contains all the bound params for the main post variant operation
+// PostVariantParams contains all the bound params for the post variant operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters main.post_variant
-type MainPostVariantParams struct {
+// swagger:parameters post_variant
+type PostVariantParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
@@ -40,8 +40,8 @@ type MainPostVariantParams struct {
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewMainPostVariantParams() beforehand.
-func (o *MainPostVariantParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewPostVariantParams() beforehand.
+func (o *PostVariantParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r

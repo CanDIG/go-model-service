@@ -9,15 +9,14 @@ import (
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
+	"strings"
 
-	"github.com/go-openapi/swag"
+	"github.com/go-openapi/strfmt"
 )
 
-// MainGetVariantsURL generates an URL for the main get variants operation
-type MainGetVariantsURL struct {
-	Chromosome *string
-	End        *int64
-	Start      *int64
+// GetIndividualsByVariantURL generates an URL for the get individuals by variant operation
+type GetIndividualsByVariantURL struct {
+	VariantID strfmt.UUID
 
 	_basePath string
 	// avoid unkeyed usage
@@ -27,7 +26,7 @@ type MainGetVariantsURL struct {
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *MainGetVariantsURL) WithBasePath(bp string) *MainGetVariantsURL {
+func (o *GetIndividualsByVariantURL) WithBasePath(bp string) *GetIndividualsByVariantURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -35,52 +34,31 @@ func (o *MainGetVariantsURL) WithBasePath(bp string) *MainGetVariantsURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *MainGetVariantsURL) SetBasePath(bp string) {
+func (o *GetIndividualsByVariantURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *MainGetVariantsURL) Build() (*url.URL, error) {
+func (o *GetIndividualsByVariantURL) Build() (*url.URL, error) {
 	var result url.URL
 
-	var _path = "/variants"
+	var _path = "/variants/{variant_id}/individuals"
+
+	variantID := o.VariantID.String()
+	if variantID != "" {
+		_path = strings.Replace(_path, "{variant_id}", variantID, -1)
+	} else {
+		return nil, errors.New("VariantID is required on GetIndividualsByVariantURL")
+	}
 
 	_basePath := o._basePath
 	result.Path = golangswaggerpaths.Join(_basePath, _path)
-
-	qs := make(url.Values)
-
-	var chromosome string
-	if o.Chromosome != nil {
-		chromosome = *o.Chromosome
-	}
-	if chromosome != "" {
-		qs.Set("chromosome", chromosome)
-	}
-
-	var end string
-	if o.End != nil {
-		end = swag.FormatInt64(*o.End)
-	}
-	if end != "" {
-		qs.Set("end", end)
-	}
-
-	var start string
-	if o.Start != nil {
-		start = swag.FormatInt64(*o.Start)
-	}
-	if start != "" {
-		qs.Set("start", start)
-	}
-
-	result.RawQuery = qs.Encode()
 
 	return &result, nil
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *MainGetVariantsURL) Must(u *url.URL, err error) *url.URL {
+func (o *GetIndividualsByVariantURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -91,17 +69,17 @@ func (o *MainGetVariantsURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *MainGetVariantsURL) String() string {
+func (o *GetIndividualsByVariantURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *MainGetVariantsURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *GetIndividualsByVariantURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on MainGetVariantsURL")
+		return nil, errors.New("scheme is required for a full url on GetIndividualsByVariantURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on MainGetVariantsURL")
+		return nil, errors.New("host is required for a full url on GetIndividualsByVariantURL")
 	}
 
 	base, err := o.Build()
@@ -115,6 +93,6 @@ func (o *MainGetVariantsURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *MainGetVariantsURL) StringFull(scheme, host string) string {
+func (o *GetIndividualsByVariantURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }
