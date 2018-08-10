@@ -12,21 +12,21 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
-	models "github.com/CanDIG/go-model-service/variant-service/api/models"
+	models "github.com/CanDIG/go-model-service/variant-service/api/generics/models"
 )
 
-// NewPostIndividualParams creates a new PostIndividualParams object
+// NewPostResourceParams creates a new PostResourceParams object
 // no default values defined in spec.
-func NewPostIndividualParams() PostIndividualParams {
+func NewPostResourceParams() PostResourceParams {
 
-	return PostIndividualParams{}
+	return PostResourceParams{}
 }
 
-// PostIndividualParams contains all the bound params for the post individual operation
+// PostResourceParams contains all the bound params for the post resource operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters post_individual
-type PostIndividualParams struct {
+// swagger:parameters post_resource
+type PostResourceParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
@@ -34,23 +34,23 @@ type PostIndividualParams struct {
 	/*
 	  In: body
 	*/
-	Individual *models.Individual
+	Resource *models.Resource
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewPostIndividualParams() beforehand.
-func (o *PostIndividualParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewPostResourceParams() beforehand.
+func (o *PostResourceParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.Individual
+		var body models.Resource
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
-			res = append(res, errors.NewParseError("individual", "body", "", err))
+			res = append(res, errors.NewParseError("resource", "body", "", err))
 		} else {
 			// validate body object
 			if err := body.Validate(route.Formats); err != nil {
@@ -58,7 +58,7 @@ func (o *PostIndividualParams) BindRequest(r *http.Request, route *middleware.Ma
 			}
 
 			if len(res) == 0 {
-				o.Individual = &body
+				o.Resource = &body
 			}
 		}
 	}

@@ -1,13 +1,9 @@
-package handlers
+package generics
 
 import (
 	"github.com/gobuffalo/pop"
-	"github.com/mauricelam/genny/generic"
-	datamodels "github.com/CanDIG/go-model-service/variant-service/data/models"
+		datamodels "github.com/CanDIG/go-model-service/variant-service/data/models"
 )
-
-// Defines the generic used to refer to any Resource being handled in the handlers package
-type Resource generic.Type
 
 // getResourceByID returns the Resource in the database corresponding to the given ID (or nil if no match is found)
 func getResourceByID(id string, tx *pop.Connection) (*datamodels.Resource, error) {

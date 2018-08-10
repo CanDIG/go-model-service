@@ -1,11 +1,11 @@
-package handlers
+package generics
 
 import (
 	"github.com/CanDIG/go-model-service/variant-service/api/restapi/operations"
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/gobuffalo/pop"
 	"github.com/CanDIG/go-model-service/variant-service/errors"
 	"github.com/CanDIG/go-model-service/variant-service/transformations"
+	"github.com/CanDIG/go-model-service/variant-service/api/restapi/handlers/utilities"
 	apimodels "github.com/CanDIG/go-model-service/variant-service/api/models"
 	datamodels "github.com/CanDIG/go-model-service/variant-service/data/models"
 )
@@ -15,12 +15,12 @@ import (
 func GetResources(params operations.GetResourcesParams) middleware.Responder {
 	funcName := "handlers.GetResources"
 
-	tx, errPayload := connectDevelopment(funcName)
+	tx, errPayload := utilities.ConnectDevelopment(funcName)
 	if errPayload != nil {
 		return operations.NewPostResourceInternalServerError().WithPayload(errPayload)
 	}
 
-	query, errPayload := getResourcesQuery(params, tx)
+	query, errPayload := utilities.GetResourcesQuery(params, tx)
 	if errPayload != nil {
 		return operations.NewPostResourceInternalServerError().WithPayload(errPayload)
 	}

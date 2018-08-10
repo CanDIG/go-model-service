@@ -1,7 +1,8 @@
-package handlers
+package utilities
 
 import (
 	"github.com/CanDIG/go-model-service/variant-service/api/restapi/operations"
+	genericOperations "github.com/CanDIG/go-model-service/variant-service/api/generics/restapi/operations"
 	"github.com/gobuffalo/pop"
 	"fmt"
 	"github.com/CanDIG/go-model-service/variant-service/errors"
@@ -17,16 +18,27 @@ func addAND(conditions string) string {
 	}
 }
 
-// getIndividualsQuery builds an Individuals-specific query out of the given parameters.
-// Since there are presently no parameters expected for this request, it simply returns all individuals.
-func getIndividualsQuery(params operations.GetIndividualsParams, tx *pop.Connection) (*pop.Query, *apimodels.Error) {
+// setOfRecords defines a type that contains a pop set of records, such as a pop.Connection or pop.Query
+type setOfRecords interface {
+	All(interface{}) error
+}
+
+// GetResourcesQuery is a generic placeholder function for a query-builder.
+// This function is used only as scaffolding for the development of api generic handlers, and should never be called.
+func GetResourcesQuery(params genericOperations.GetResourcesParams, tx *pop.Connection) (setOfRecords, *apimodels.Error) {
 	return tx, nil
 }
 
-// getVariantsQuery builds an Individuals-specific query out of the given parameters.
+// GetIndividualsQuery builds an Individuals-specific query out of the given parameters.
+// Since there are presently no parameters expected for this request, it simply returns all individuals.
+func GetIndividualsQuery(params operations.GetIndividualsParams, tx *pop.Connection) (*setOfRecords, *apimodels.Error) {
+	return tx, nil
+}
+
+// GetVariantsQuery builds an Individuals-specific query out of the given parameters.
 // It rejects get-all requests, as such a request would, in a production service, return a prohibitively
 // large amount of data and would likely only be entered in error or in malice.
-func getVariantsQuery(params operations.GetVariantsParams, tx *pop.Connection) (*pop.Query, *apimodels.Error) {
+func GetVariantsQuery(params operations.GetVariantsParams, tx *pop.Connection) (*setOfRecords, *apimodels.Error) {
 	funcName := "handlers.getVariantsQuery"
 
 	conditions := ""

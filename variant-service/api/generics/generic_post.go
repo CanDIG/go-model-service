@@ -1,13 +1,11 @@
-package handlers
+package generics
 
 import (
-	"github.com/cheekybits/genny/generic"
-
 	"github.com/CanDIG/go-model-service/variant-service/api/restapi/operations"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/CanDIG/go-model-service/variant-service/transformations"
-	"github.com/gobuffalo/pop"
 	"github.com/CanDIG/go-model-service/variant-service/errors"
+	"github.com/CanDIG/go-model-service/variant-service/api/restapi/handlers/utilities"
 	apimodels "github.com/CanDIG/go-model-service/variant-service/api/models"
 )
 
@@ -16,12 +14,12 @@ import (
 func PostResource(params operations.PostResourceParams) middleware.Responder {
 	funcName := "handlers.Post"
 
-	tx, errPayload := connectDevelopment(funcName)
+	tx, errPayload := utilities.ConnectDevelopment(funcName)
 	if errPayload != nil {
 		return operations.NewPostResourceInternalServerError().WithPayload(errPayload)
 	}
 
-	_, err = getResourceByID(params.Resource.ID.String(), tx)
+	_, err := getResourceByID(params.Resource.ID.String(), tx)
 	if err == nil { // TODO this is not a great check
 		message := "This Resource already exists in the database. " +
 			"It cannot be overwritten with POST; please use PUT instead."
