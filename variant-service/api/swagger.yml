@@ -10,6 +10,7 @@
 #                 These are used to to populate the `operations` package (found in
 #                 `restapi/operations`), and a handler (to be manually implemented) is generated
 #                 for each of these in `configure_variant_service.go`
+#                 Default responses are used for errors to enable entity-agnostic middleware.
 # - definitions:  Defines the schemas/models in the API, for parameters and for responses, to be
 #                 represented by go structs in the code.
 #                 These are used to to populate the `models` package and can be referred to
@@ -21,54 +22,87 @@ info:
   description: A model variant service demonstarting CanDIG API best practices
   title: A barebones service for variant calls
   version: 1.0.0
+# should add this for versioning
+# basePath: /v1
 produces:
 - application/json
 schemes:
 - http
 swagger: "2.0" # version used by go-swagger tool
+
 paths:
-  /variants:
-    get:
-      operationId: main.get_variants
-      summary: Get all variants within genomic range
+  /individuals:
+    post:
+      operationId: post_individual
+      summary: Add an individual to the database
       parameters:
-        - name: chromosome
-          in: query
-          type: string
-          pattern: "^[a-zA-Z0-9]*$"
-        - name: start
-          in: query
-          type: integer
-          minimum: 1
-        - name: end
-          in: query
-          type: integer
-          minimum: 1
+      - name: individual
+        in: body
+        schema:
+          $ref: '#/definitions/Individual'
+          example:
+            description: "Subject 17"
       responses:
-        200:
-          description: Return variants
+        201:
+          description: New individual created
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Variant'
-        403:
-          description: Forbidden to query for all variants
+            $ref: "#/definitions/Individual"
+          headers:
+            Location:
+              type: string
+              format: url
+        default:
+          description: A 405 or 500 error has prevented the creation of this individual
           schema:
             $ref: '#/definitions/Error'
-        500:
-          description: Internal error
+    get:
+      operationId: get_individuals
+      summary: Get all individuals
+      responses:
+        200:
+          description: Return individuals
           schema:
-            $ref: "#/definitions/Error"
+            type: array
+            example: []
+            items:
+              $ref: '#/definitions/Individual'
+        default:
+          description: A 500 error has occurred
+          schema:
+            $ref: '#/definitions/Error'
+
+  /individuals/{individual_id}:
+    get:
+      operationId: get_one_individual
+      summary: Get specific individual
+      parameters:
+      - $ref: '#/parameters/individual_id'
+      responses:
+        200:
+          description: Return individual
+          schema:
+            $ref: '#/definitions/Individual'
+        default:
+          description: A 404 or 500 error has occurred
+          schema:
+            $ref: '#/definitions/Error'
+
+  /variants:
     post:
-      operationId: main.post_variant
+      operationId: post_variant
       summary: Add a variant to the database
       parameters:
         - name: variant
           in: body
           schema:
             $ref: '#/definitions/Variant'
+            example:
+              name: "rs6054257"
+              chromosome: "chr1"
+              start: 14370
+              ref: "G"
+              alt: "A"
       responses:
-        # TODO Add error code 
         201:
           description: New variant created
           schema:
@@ -76,18 +110,192 @@ paths:
           headers:
             Location:
               type: string
-        400:
-          description: Variant provided in body does not pass schema validation
+              format: url
+        default:
+          description: A 405 or 500 error has prevented the creation of this variant
           schema:
-            $ref: "#/definitions/Error"
-        405:
-          description: Forbidden to overwrite variant in put
+            $ref: '#/definitions/Error'
+    get:
+      operationId: get_variants
+      summary: Get all variants within genomic range
+      parameters:
+      - $ref: '#/parameters/chromosome'
+      - $ref: '#/parameters/start'
+      - $ref: '#/parameters/range_end'
+      responses:
+        200:
+          description: Return variants
           schema:
-            $ref: "#/definitions/Error"
-        500:
-          description: Internal error - Variant not created
+            type: array
+            items:
+              $ref: '#/definitions/Variant'
+        default:
+          description: A 403 or 500 error has occurred
           schema:
-            $ref: "#/definitions/Error"
+            $ref: '#/definitions/Error'
+
+  /variants/{variant_id}:
+    get:
+      operationId: get_one_variant
+      summary: Get specific variant
+      parameters:
+        - $ref: '#/parameters/variant_id'
+      responses:
+        200:
+          description: Return variant
+          schema:
+            $ref: '#/definitions/Variant'
+        default:
+          description: A 404 or 500 error has occurred
+          schema:
+            $ref: '#/definitions/Error'
+
+  /calls:
+    post:
+      operationId: post_call
+      summary: Add a call to the database
+      parameters:
+        - name: call
+          in: body
+          schema:
+            $ref: '#/definitions/Call'
+            example:
+              individual_id: bf3ba75b-8dfe-4619-b832-31c4a087a589
+              variant_id: bf3ba75b-8dfe-4619-b832-31c4a087a589
+              genotype: "0/1"
+              fmt: "GQ:DP:HQ 48:1:51,51"
+      responses:
+        201:
+          description: New call created
+          schema:
+            $ref: "#/definitions/Call"
+          headers:
+            Location:
+              type: string
+              format: url
+        default:
+          description: A 405 or 500 error has prevented the creation of this call
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      operationId: get_calls
+      summary: Get all calls
+      responses:
+        200:
+          description: Return calls
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Call'
+        default:
+          description: A 500 error has occurred
+          schema:
+            $ref: '#/definitions/Error'
+
+  /calls/{call_id}:
+    get:
+      operationId: get_one_call
+      summary: Get specific call
+      parameters:
+        - $ref: '#/parameters/call_id'
+      responses:
+        200:
+          description: Return call
+          schema:
+            $ref: '#/definitions/Call'
+        default:
+          description: A 404 or 500 error has occurred
+          schema:
+            $ref: '#/definitions/Error'
+
+  /individuals/{individual_id}/variants:
+    get:
+      operationId: get_variants_by_individual
+      summary: Get variants called in an individual
+      parameters:
+        - $ref: '#/parameters/individual_id'
+      responses:
+        200:
+          description: Return individuals
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Variant'
+        default:
+          description: A 404 or 500 error has occurred
+          schema:
+            $ref: '#/definitions/Error'
+
+  /variants/{variant_id}/individuals:
+    get:
+      operationId: get_individuals_by_variant
+      summary: Get individuals with a given variant called
+      parameters:
+        - $ref: '#/parameters/variant_id'
+      responses:
+        200:
+          description: Return individuals
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Individual'
+        default:
+          description: A 404 or 500 error has occurred
+          schema:
+            $ref: '#/definitions/Error'
+
+parameters:
+  variant_id:
+    name: variant_id
+    description: Variant unique identifier
+    in: path
+    type: string
+    format: uuid
+    x-example: bf3ba75b-8dfe-4619-b832-31c4a087a589
+    required: true
+
+  individual_id:
+    name: individual_id
+    description: Individual unique identifier
+    in: path
+    type: string
+    format: uuid
+    x-example: bf3ba75b-8dfe-4619-b832-31c4a087a589
+    required: true
+
+  call_id:
+    name: call_id
+    description: Call unique identifier
+    in: path
+    type: string
+    format: uuid
+    x-example: bf3ba75b-8dfe-4619-b832-31c4a087a589
+    required: true
+
+  chromosome:
+    name: choromosome
+    in: query
+    type: string
+    pattern: "^[a-zA-Z0-9]*$"
+    x-example: "chr1"
+    required: true
+
+  start:
+    name: start
+    in: query
+    type: integer
+    minimum: 1
+    x-example: 10000
+    required: true
+
+  range_end:
+    name: end
+    in: query
+    type: integer
+    minimum: 1
+    required: true
+    x-example: 20000
+
 definitions:
   Error:
     type: object
