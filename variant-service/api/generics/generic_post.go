@@ -41,7 +41,9 @@ func PostResource(params operations.PostResourceParams) middleware.Responder {
 		return operations.NewPostResourceInternalServerError().WithPayload(errPayload)
 	}
 
-	retreivedDataResource, err := getResourceByID(newResource.ID.String(), tx)
+	// TODO if errors occur from this point on, the resource may have already been created,
+	// so it should be deleted prior to return
+	retrievedDataResource, err := getResourceByID(newResource.ID.String(), tx)
 	if err != nil {
 		errors.Log(err, 500, funcName,
 			"Failed to get Resource by ID from database immediately following its creation")
@@ -49,12 +51,12 @@ func PostResource(params operations.PostResourceParams) middleware.Responder {
 		return operations.NewPostResourceInternalServerError().WithPayload(errPayload)
 	}
 
-	retreivedAPIResource, errPayload := transformations.ResourceDataToAPIModel(*retreivedDataResource)
+	retrievedAPIResource, errPayload := transformations.ResourceDataToAPIModel(*retrievedDataResource)
 	if err != nil {
 		return operations.NewPostResourceInternalServerError().WithPayload(errPayload)
 	}
 
 	location := params.HTTPRequest.URL.Host + params.HTTPRequest.URL.EscapedPath() +
-		"/" + retreivedAPIResource.ID.String()
-	return operations.NewPostResourceCreated().WithPayload(retreivedAPIResource).WithLocation(location)
+		"/" + retrievedAPIResource.ID.String()
+	return operations.NewPostResourceCreated().WithPayload(retrievedAPIResource).WithLocation(location)
 }

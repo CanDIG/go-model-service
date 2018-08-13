@@ -2,7 +2,7 @@
 // Any changes will be lost if this file is regenerated.
 // see https://github.com/mauricelam/genny
 
-package generics
+package handlers
 
 import (
 	"github.com/CanDIG/go-model-service/variant-service/api/restapi/operations"
@@ -21,71 +21,71 @@ import (
 )
 
 // GetIndividuals returns all Individuals in the database given zero or more query parameters.
-// The query parameters are handled separately in getindividualsQuery.
-func GetIndividuals(params operations.GetindividualsParams) middleware.Responder {
-	funcName := "handlers.Getindividuals"
+// The query parameters are handled separately in getIndividualsQuery.
+func GetIndividuals(params operations.GetIndividualsParams) middleware.Responder {
+	funcName := "handlers.GetIndividuals"
 
 	tx, errPayload := utilities.ConnectDevelopment(funcName)
 	if errPayload != nil {
-		return operations.NewPostindividualInternalServerError().WithPayload(errPayload)
+		return operations.NewPostIndividualInternalServerError().WithPayload(errPayload)
 	}
 
-	query, errPayload := utilities.GetindividualsQuery(params, tx)
+	query, errPayload := utilities.GetIndividualsQuery(params, tx)
 	if errPayload != nil {
-		return operations.NewPostindividualInternalServerError().WithPayload(errPayload)
+		return operations.NewPostIndividualInternalServerError().WithPayload(errPayload)
 	}
 
-	var dataindividuals []datamodels.Individual
-	err := query.All(&dataindividuals)
+	var dataIndividuals []datamodels.Individual
+	err := query.All(&dataIndividuals)
 	if err != nil {
 		errors.Log(err, 500, funcName, "Problems getting Individuals from database")
 		errPayload := errors.DefaultInternalServerError()
-		return operations.NewGetindividualsInternalServerError().WithPayload(errPayload)
+		return operations.NewGetIndividualsInternalServerError().WithPayload(errPayload)
 	}
 
-	var apiindividuals []*apimodels.Individual
-	for _, dataindividual := range dataindividuals {
-		apiindividual, errPayload := transformations.individualDataToAPIModel(dataindividual)
+	var apiIndividuals []*apimodels.Individual
+	for _, dataIndividual := range dataIndividuals {
+		apiIndividual, errPayload := transformations.IndividualDataToAPIModel(dataIndividual)
 		if errPayload != nil {
-			return operations.NewGetindividualsInternalServerError().WithPayload(errPayload)
+			return operations.NewGetIndividualsInternalServerError().WithPayload(errPayload)
 		}
-		apiindividuals = append(apiindividuals, apiindividual)
+		apiIndividuals = append(apiIndividuals, apiIndividual)
 	}
 
-	return operations.NewGetindividualsOK().WithPayload(apiindividuals)
+	return operations.NewGetIndividualsOK().WithPayload(apiIndividuals)
 }
 
 // GetVariants returns all Variants in the database given zero or more query parameters.
-// The query parameters are handled separately in getvariantsQuery.
-func GetVariants(params operations.GetvariantsParams) middleware.Responder {
-	funcName := "handlers.Getvariants"
+// The query parameters are handled separately in getVariantsQuery.
+func GetVariants(params operations.GetVariantsParams) middleware.Responder {
+	funcName := "handlers.GetVariants"
 
 	tx, errPayload := utilities.ConnectDevelopment(funcName)
 	if errPayload != nil {
-		return operations.NewPostvariantInternalServerError().WithPayload(errPayload)
+		return operations.NewPostVariantInternalServerError().WithPayload(errPayload)
 	}
 
-	query, errPayload := utilities.GetvariantsQuery(params, tx)
+	query, errPayload := utilities.GetVariantsQuery(params, tx)
 	if errPayload != nil {
-		return operations.NewPostvariantInternalServerError().WithPayload(errPayload)
+		return operations.NewPostVariantInternalServerError().WithPayload(errPayload)
 	}
 
-	var datavariants []datamodels.Variant
-	err := query.All(&datavariants)
+	var dataVariants []datamodels.Variant
+	err := query.All(&dataVariants)
 	if err != nil {
 		errors.Log(err, 500, funcName, "Problems getting Variants from database")
 		errPayload := errors.DefaultInternalServerError()
-		return operations.NewGetvariantsInternalServerError().WithPayload(errPayload)
+		return operations.NewGetVariantsInternalServerError().WithPayload(errPayload)
 	}
 
-	var apivariants []*apimodels.Variant
-	for _, datavariant := range datavariants {
-		apivariant, errPayload := transformations.variantDataToAPIModel(datavariant)
+	var apiVariants []*apimodels.Variant
+	for _, dataVariant := range dataVariants {
+		apiVariant, errPayload := transformations.VariantDataToAPIModel(dataVariant)
 		if errPayload != nil {
-			return operations.NewGetvariantsInternalServerError().WithPayload(errPayload)
+			return operations.NewGetVariantsInternalServerError().WithPayload(errPayload)
 		}
-		apivariants = append(apivariants, apivariant)
+		apiVariants = append(apiVariants, apiVariant)
 	}
 
-	return operations.NewGetvariantsOK().WithPayload(apivariants)
+	return operations.NewGetVariantsOK().WithPayload(apiVariants)
 }

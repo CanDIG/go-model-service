@@ -2,7 +2,7 @@
 // Any changes will be lost if this file is regenerated.
 // see https://github.com/mauricelam/genny
 
-package generics
+package handlers
 
 import (
 	"github.com/gobuffalo/pop"
@@ -10,16 +10,16 @@ import (
 	datamodels "github.com/CanDIG/go-model-service/variant-service/data/models"
 )
 
-// getindividualByID returns the Individual in the database corresponding to the given ID (or nil if no match is found)
-func getindividualByID(id string, tx *pop.Connection) (*datamodels.Individual, error) {
-	var individual *datamodels.Individual
-	err := tx.Find(individual, id)
-	return individual, err
+// getIndividualByID returns the Individual in the database corresponding to the given ID (or nil if no match is found)
+func getIndividualByID(id string, tx *pop.Connection) (*datamodels.Individual, error) {
+	resource := &datamodels.Individual{}
+	err := tx.Find(resource, id)
+	return resource, err
 }
 
-// getvariantByID returns the Variant in the database corresponding to the given ID (or nil if no match is found)
-func getvariantByID(id string, tx *pop.Connection) (*datamodels.Variant, error) {
-	var individual *datamodels.Variant
-	err := tx.Find(individual, id)
-	return individual, err
+// getVariantByID returns the Variant in the database corresponding to the given ID (or nil if no match is found)
+func getVariantByID(id string, tx *pop.Connection) (*datamodels.Variant, error) {
+	resource := &datamodels.Variant{}
+	err := tx.Find(resource, id)
+	return resource, err
 }

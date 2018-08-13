@@ -7,7 +7,7 @@ import (
 
 // getResourceByID returns the Resource in the database corresponding to the given ID (or nil if no match is found)
 func getResourceByID(id string, tx *pop.Connection) (*datamodels.Resource, error) {
-	var individual *datamodels.Resource
-	err := tx.Find(individual, id)
-	return individual, err
+	resource := &datamodels.Resource{}
+	err := tx.Find(resource, id)
+	return resource, err
 }

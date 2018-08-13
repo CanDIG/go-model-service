@@ -2,7 +2,7 @@
 // Any changes will be lost if this file is regenerated.
 // see https://github.com/mauricelam/genny
 
-package generics
+package handlers
 
 import (
 	"github.com/CanDIG/go-model-service/variant-service/api/restapi/operations"
@@ -20,100 +20,100 @@ import (
 
 // PostIndividual processes a Individual posted by the API request and creates it into the database.
 // It then retrieves the newly created Individual from the database and returns it, along with its URL location.
-func PostIndividual(params operations.PostindividualParams) middleware.Responder {
+func PostIndividual(params operations.PostIndividualParams) middleware.Responder {
 	funcName := "handlers.Post"
 
 	tx, errPayload := utilities.ConnectDevelopment(funcName)
 	if errPayload != nil {
-		return operations.NewPostindividualInternalServerError().WithPayload(errPayload)
+		return operations.NewPostIndividualInternalServerError().WithPayload(errPayload)
 	}
 
-	_, err := getindividualByID(params.individual.ID.String(), tx)
+	_, err := getIndividualByID(params.Individual.ID.String(), tx)
 	if err == nil { // TODO this is not a great check
 		message := "This Individual already exists in the database. " +
 			"It cannot be overwritten with POST; please use PUT instead."
 		errors.Log(nil, 405, funcName, message)
 		errPayload := &apimodels.Error{Code: 405001, Message: &message}
-		return operations.NewPostindividualMethodNotAllowed().WithPayload(errPayload)
+		return operations.NewPostIndividualMethodNotAllowed().WithPayload(errPayload)
 	}
 
-	newindividual, errPayload := transformations.individualAPIToDataModel(*params.individual, tx)
+	newIndividual, errPayload := transformations.IndividualAPIToDataModel(*params.Individual, tx)
 	if errPayload != nil {
-		return operations.NewPostindividualInternalServerError().WithPayload(errPayload)
+		return operations.NewPostIndividualInternalServerError().WithPayload(errPayload)
 	}
 
-	err = tx.Create(newindividual)
+	err = tx.Create(newIndividual)
 	if err != nil {
 		errors.Log(err, 500, funcName,
 			"Create into database failed")
 		errPayload := errors.DefaultInternalServerError()
-		return operations.NewPostindividualInternalServerError().WithPayload(errPayload)
+		return operations.NewPostIndividualInternalServerError().WithPayload(errPayload)
 	}
 
-	retreivedDataindividual, err := getindividualByID(newindividual.ID.String(), tx)
+	retrievedDataIndividual, err := getIndividualByID(newIndividual.ID.String(), tx)
 	if err != nil {
 		errors.Log(err, 500, funcName,
 			"Failed to get Individual by ID from database immediately following its creation")
 		errPayload := errors.DefaultInternalServerError()
-		return operations.NewPostindividualInternalServerError().WithPayload(errPayload)
+		return operations.NewPostIndividualInternalServerError().WithPayload(errPayload)
 	}
 
-	retreivedAPIindividual, errPayload := transformations.individualDataToAPIModel(*retreivedDataindividual)
+	retrievedAPIIndividual, errPayload := transformations.IndividualDataToAPIModel(*retrievedDataIndividual)
 	if err != nil {
-		return operations.NewPostindividualInternalServerError().WithPayload(errPayload)
+		return operations.NewPostIndividualInternalServerError().WithPayload(errPayload)
 	}
 
 	location := params.HTTPRequest.URL.Host + params.HTTPRequest.URL.EscapedPath() +
-		"/" + retreivedAPIindividual.ID.String()
-	return operations.NewPostindividualCreated().WithPayload(retreivedAPIindividual).WithLocation(location)
+		"/" + retrievedAPIIndividual.ID.String()
+	return operations.NewPostIndividualCreated().WithPayload(retrievedAPIIndividual).WithLocation(location)
 }
 
 // PostVariant processes a Variant posted by the API request and creates it into the database.
 // It then retrieves the newly created Variant from the database and returns it, along with its URL location.
-func PostVariant(params operations.PostvariantParams) middleware.Responder {
+func PostVariant(params operations.PostVariantParams) middleware.Responder {
 	funcName := "handlers.Post"
 
 	tx, errPayload := utilities.ConnectDevelopment(funcName)
 	if errPayload != nil {
-		return operations.NewPostvariantInternalServerError().WithPayload(errPayload)
+		return operations.NewPostVariantInternalServerError().WithPayload(errPayload)
 	}
 
-	_, err := getvariantByID(params.variant.ID.String(), tx)
+	_, err := getVariantByID(params.Variant.ID.String(), tx)
 	if err == nil { // TODO this is not a great check
 		message := "This Variant already exists in the database. " +
 			"It cannot be overwritten with POST; please use PUT instead."
 		errors.Log(nil, 405, funcName, message)
 		errPayload := &apimodels.Error{Code: 405001, Message: &message}
-		return operations.NewPostvariantMethodNotAllowed().WithPayload(errPayload)
+		return operations.NewPostVariantMethodNotAllowed().WithPayload(errPayload)
 	}
 
-	newvariant, errPayload := transformations.variantAPIToDataModel(*params.variant, tx)
+	newVariant, errPayload := transformations.VariantAPIToDataModel(*params.Variant, tx)
 	if errPayload != nil {
-		return operations.NewPostvariantInternalServerError().WithPayload(errPayload)
+		return operations.NewPostVariantInternalServerError().WithPayload(errPayload)
 	}
 
-	err = tx.Create(newvariant)
+	err = tx.Create(newVariant)
 	if err != nil {
 		errors.Log(err, 500, funcName,
 			"Create into database failed")
 		errPayload := errors.DefaultInternalServerError()
-		return operations.NewPostvariantInternalServerError().WithPayload(errPayload)
+		return operations.NewPostVariantInternalServerError().WithPayload(errPayload)
 	}
 
-	retreivedDatavariant, err := getvariantByID(newvariant.ID.String(), tx)
+	retrievedDataVariant, err := getVariantByID(newVariant.ID.String(), tx)
 	if err != nil {
 		errors.Log(err, 500, funcName,
 			"Failed to get Variant by ID from database immediately following its creation")
 		errPayload := errors.DefaultInternalServerError()
-		return operations.NewPostvariantInternalServerError().WithPayload(errPayload)
+		return operations.NewPostVariantInternalServerError().WithPayload(errPayload)
 	}
 
-	retreivedAPIvariant, errPayload := transformations.variantDataToAPIModel(*retreivedDatavariant)
+	retrievedAPIVariant, errPayload := transformations.VariantDataToAPIModel(*retrievedDataVariant)
 	if err != nil {
-		return operations.NewPostvariantInternalServerError().WithPayload(errPayload)
+		return operations.NewPostVariantInternalServerError().WithPayload(errPayload)
 	}
 
 	location := params.HTTPRequest.URL.Host + params.HTTPRequest.URL.EscapedPath() +
-		"/" + retreivedAPIvariant.ID.String()
-	return operations.NewPostvariantCreated().WithPayload(retreivedAPIvariant).WithLocation(location)
+		"/" + retrievedAPIVariant.ID.String()
+	return operations.NewPostVariantCreated().WithPayload(retrievedAPIVariant).WithLocation(location)
 }

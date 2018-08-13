@@ -3,10 +3,10 @@
 # TODO make smarter by only re-generating files if they've been modified (makefile?)
 
 # Generate handler utilities for the following resources: Individual, Variant
-cat ./generics/generic_resource_utilities.go | genny gen "Resource=Individual,Variant" > ./restapi/handlers/resource_utilities.go
+genny -in ./generics/generic_resource_utilities.go -out ./restapi/handlers/resource_utilities.go -pkg handlers gen "Resource=Individual,Variant"
 
 # Generate POST handlers for the following resources: Individual, Variant
-cat ./generics/generic_post.go | genny gen "Resource=Individual,Variant" > ./restapi/handlers/post.go
+genny -in ./generics/generic_post.go -out ./restapi/handlers/post.go -pkg handlers gen "Resource=Individual,Variant"
 
 # Generate GET (many) handlers for the following resources: Individual, Variant
-cat ./generics/generic_get_many.go | genny gen "Resource=Individual,Variant" > ./restapi/handlers/get_many.go
+genny -in ./generics/generic_get_many.go -out ./restapi/handlers/get_many.go -pkg handlers gen "Resource=Individual,Variant"

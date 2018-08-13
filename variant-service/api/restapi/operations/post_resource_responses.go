@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	models "github.com/CanDIG/go-model-service/variant-service/api/generics/models"
+	models "github.com/CanDIG/go-model-service/variant-service/api/models"
 )
 
 // PostResourceCreatedCode is the HTTP code returned for type PostResourceCreated

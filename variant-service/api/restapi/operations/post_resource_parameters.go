@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
-	models "github.com/CanDIG/go-model-service/variant-service/api/generics/models"
+	models "github.com/CanDIG/go-model-service/variant-service/api/models"
 )
 
 // NewPostResourceParams creates a new PostResourceParams object
