@@ -4,7 +4,12 @@
 # for running the service.
 # It also creates a new development database to write into.
 
-export POP_PATH=$GOPATH/src/github.com/CanDIG/go-model-service/model-vs/config
+# Set up path to database configuration file. 
+# This database config file must be kept within one of the following paths, relative to
+# the file attempting to make the database connection:
+# "", "./config", "/config", "../", "../config", "../..", "../../config", "APP_PATH", "POP_PATH"
+# For more information: https://github.com/gobuffalo/pop/blob/master/config.go
+export POP_PATH=$GOPATH/src/github.com/CanDIG/go-model-service/config
 
 # Use the dep tool to install all project import dependencies in a
 # new vendor directory.
@@ -21,10 +26,10 @@ dep ensure -vendor-only
 
 # Create a sqlite3 development database and migrate it to the schema
 # defined in the model-vs/data directory, using the soda tool from pop
-cd model-vs/config
+cd config
 soda create -c ./database.yml -e development
-soda migrate up -c ./database.yml -e development -p ../data/migrations
-cd ../..
+soda migrate up -c ./database.yml -e development -p ../model-vs/data/migrations
+cd ..
 
 # Swagger generate the boilerplate code necessary for handling API requests
 # from the model-vs/api/swagger.yml template file
