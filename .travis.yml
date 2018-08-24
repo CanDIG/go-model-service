@@ -10,7 +10,7 @@ before_install:
  - ./install_dep.sh
 
 install:
- - ./install.sh
+ - . ./install.sh
 
 script:
  - true

@@ -5,6 +5,6 @@
 
 development:
   dialect: "sqlite3"
-  database: "../data/development.sqlite" # TODO change to $APP_PATH-relative path
+  database: "../model-vs/data/development.sqlite"
   host: "localhost"
   port: "8080"

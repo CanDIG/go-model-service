@@ -15,10 +15,10 @@ Once you have [installed the stack](#installing-the-stack), run the following co
   $ git checkout https://github.com/CanDIG/go-model-service.git
   $ cd go-model-service
   ```
-2. Run the installation script from the project root directory:
+2. Run the installation script from the project root directory. It is important that you run it from within the active shell, so that pertinent paths are set.
   ```
   $ cd $GOPATH/src/github.com/CanDIG/go-model-service
-  $ ./install.sh
+  $ . ./install.sh
   ```
 3. From the project root directory, run the server on a port of your choosing (eg. port 3000):
   ```
@@ -74,6 +74,10 @@ See `install_dep.sh` for an example of the installation of steps 3-7. It s not r
   ```
   $ cd $GOPATH/src/github.com/CanDIG/go-model-service
   $ dep ensure -vendor-only
+  ```
+3. Set the path for for the database configuration file.
+  ```
+  $ export POP_PATH=$GOPATH/src/github.com/CanDIG/go-model-service/model-vs/config
   ```
 3. Create a sqlite3 development database and migrate it to the schema defined in the `model-vs/data` directory, using the pop CLI tool `soda`:
   ```
