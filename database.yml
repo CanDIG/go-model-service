@@ -3,8 +3,11 @@
 # "", "./config", "/config", "../", "../config", "../..", "../../config", "APP_PATH", "POP_PATH"
 # For more information: https://github.com/gobuffalo/pop/blob/master/config.go
 
+# This file must be kept in the same directory as the main file being run. Otherwise, the database
+# (development.sqlite) will not be found when the program is run.
+
 development:
   dialect: "sqlite3"
-  database: "../model-vs/data/development.sqlite"
+  database: "./model-vs/data/development.sqlite"
   host: "localhost"
   port: "8080"

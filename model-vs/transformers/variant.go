@@ -34,7 +34,7 @@ func VariantDataToAPI(dataVariant datamodels.Variant) (*apimodels.Variant, error
 // VariantAPIToData contains the model-building step of the data-model-to-api-model transformer.
 func VariantAPIToData(apiVariant apimodels.Variant) (*datamodels.Variant, error) {
 	return &datamodels.Variant{
-		Name:       *apiVariant.Name,
+		Name:       stringValueOrZero(apiVariant.Name), // Name is not a required field, may be nil
 		Chromosome: *apiVariant.Chromosome,
 		Start:      nulls.NewInt(int(*apiVariant.Start)),
 		Ref:        *apiVariant.Ref,

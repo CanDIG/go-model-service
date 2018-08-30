@@ -75,15 +75,15 @@ See `install_dep.sh` for an example of the installation of steps 3-7. It s not r
   $ cd $GOPATH/src/github.com/CanDIG/go-model-service
   $ dep ensure -vendor-only
   ```
-3. Set the path for for the database configuration file.
+3. Set the path for for the database and its configuration file.
   ```
-  $ export POP_PATH=$GOPATH/src/github.com/CanDIG/go-model-service/model-vs/config
+  $ export POP_PATH=$GOPATH/src/github.com/CanDIG/go-model-service/model-vs/database
   ```
 3. Create a sqlite3 development database and migrate it to the schema defined in the `model-vs/data` directory, using the pop CLI tool `soda`:
   ```
-  $ cd $GOPATH/src/github.com/CanDIG/go-model-service/model-vs/data
-  $ soda create -e development
-  $ soda migrate up -e development
+  $ cd $GOPATH/src/github.com/CanDIG/go-model-service
+  $ soda create -c ./database.yml -e development
+  $ soda migrate up -c ./database.yml -e development -p model-vs/data/migrations
   ```
 4. Generate the boilerplate code necessary for handling API requests, from the `model-vs/api/swagger.yml` template file, with the Go-swagger CLI tool `swagger`. The following commands will generate a server named `variant-service`. This name is important for maintaining compatibility with the `configure_variant_service.go` middleware configuration file.
   ```
@@ -286,3 +286,9 @@ See the [genny README](https://github.com/CanDIG/genny#genny---generics-for-go) 
 Run `$ model-vs/api/generate_handlers.sh` to re-generate the handlers in the `github.com/CanDIG/go-model-service/model-vs/api/restapi/handlers` package.
 
 There remain several issues with the genny tool that block the complete integration of generic code-gen into our project. Please contribute to the resolution of these issues in our [genny](https://github.com/CanDIG/genny/issues) repository.
+
+### Dredd
+
+Dredd can use the `swagger.yml` api definitions to run automated testing on the API. It uses `example` headings defined in the swagger file to generate its input bodies and parameters.
+
+It can be helpful to only populate the examples with the required fields, to check that all non-required fields are handled properly for possible nil pointers.

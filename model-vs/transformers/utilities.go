@@ -19,3 +19,33 @@ func uuidAPIToData(apiUUID strfmt.UUID, fieldName string) (*uuid.UUID, error) {
 
 	return &dataUUID, nil
 }
+
+// stringValueOrZero converts a pointer to a string to its constituent string, but handles nil pointers
+// better than a simple * conversion by converting the nil values to "" (string zero value.)
+func stringValueOrZero(pointer *string) string {
+	if pointer == nil {
+		return ""
+	}
+
+	return *pointer
+}
+
+// stringValueOrZero converts a pointer to an int to its constituent int, but handles nil pointers
+// better than a simple * conversion by converting the nil values to 0 (int zero value.)
+func intValueOrZero(pointer *int) int {
+	if pointer == nil {
+		return 0
+	}
+
+	return *pointer
+}
+
+// stringValueOrZero converts a pointer to an boolean to its constituent boolean, but handles nil pointers
+// better than a simple * conversion by converting the nil values to false (boolean zero value.)
+func boolValueOrZero(pointer *bool) bool {
+	if pointer == nil {
+		return false
+	}
+
+	return *pointer
+}
