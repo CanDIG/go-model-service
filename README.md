@@ -15,7 +15,7 @@ Once you have [installed the stack](#installing-the-stack), run the following co
   $ git checkout https://github.com/CanDIG/go-model-service.git
   $ cd go-model-service
   ```
-2. Run the installation script from the project root directory. It is important that you run it from within the active shell, so that pertinent paths are set.
+2. Run the installation script from the project root directory. It is important that you run it from within the active shell, so that pertinent environment variables are set in the same shell as the one that will be running the program via `$ ./main`.
   ```
   $ cd $GOPATH/src/github.com/CanDIG/go-model-service
   $ . ./install.sh
