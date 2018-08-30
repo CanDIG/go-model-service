@@ -36,5 +36,5 @@ func CallAPIToData(apiCall apimodels.Call) (*datamodels.Call, error) {
 		Individual:		*dataIndividualID,
 		Variant:		*dataVariantID,
 		Genotype:		*apiCall.Genotype,
-		Format:			*apiCall.Format}, nil
+		Format:			stringValueOrZero(apiCall.Format)}, nil // Format is not a required field, may be nil
 }
