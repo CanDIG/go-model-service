@@ -1,5 +1,5 @@
 dry-run: null
-hookfiles: null
+hookfiles: ./model-vs/api/dreddhooks.py
 language: python
 sandbox: false
 server: ./main --port=3000
@@ -23,10 +23,10 @@ path: []
 hooks-worker-timeout: 5000
 hooks-worker-connect-timeout: 1500
 hooks-worker-connect-retry: 500
-hooks-worker-after-connect-wait: 100
+hooks-worker-after-connect-wait: 500
 hooks-worker-term-timeout: 5000
 hooks-worker-term-retry: 500
 hooks-worker-handler-host: 127.0.0.1
-config: ./dredd.yml
-blueprint: swagger.yml
+config: ./model-vs/api/dredd.yml
+blueprint: ./model-vs/api/swagger.yml
 endpoint: 'http://127.0.0.1:3000'
