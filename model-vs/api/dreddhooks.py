@@ -57,7 +57,7 @@ def insert_individual_id(transaction, implemented=True):
 
 
 @hooks.before("/calls > Add a call to the database > 201 > application/json")
-def print_transaction(transaction):
+def make_valid_call_post(transaction):
     request_body = json.loads(transaction['request']['body'])
     request_body['individual_id'] = response_stash['individual_ids'][0]
     request_body['variant_id'] = response_stash['variant_ids'][0]
@@ -67,6 +67,7 @@ def print_transaction(transaction):
 @hooks.before("/variants/{variant_id}/individuals > Get individuals with a given variant called > 200 > application/json") # noqa501
 def specific_variant(transaction):
     insert_variant_id(transaction, GET_INDIVIDUALS_BY_VARIANT_IMPLEMENTED)
+
 
 @hooks.before("/variants/{variant_id} > Get specific variant > 200 > application/json") # noqa501
 def individuals_by_variant(transaction):
