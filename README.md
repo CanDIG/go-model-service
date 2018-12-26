@@ -50,7 +50,12 @@ Prior to installing new programs, run `$ which <program-name>` to check if it is
 
 See `install_dep.sh` for an example of the installation of steps 3-7. It s not recommended that you run this script locally, as some of these programs may already be installed on your system and the version of some tools may matter (eg. Go-swagger v0.16.0).
 
-1. [Install Go](https://golang.org/doc/install). Make sure to set up the `$PATH` and `$GOPATH` environment variables according to [these instructions](https://www.digitalocean.com/community/tutorials/), and to understand the expected contents of the three `$GOPATH` subdirectories: `$GOPATH/src`, `$GOPATH/pkg`, and `$GOPATH/bin`.
+1. [Install Go](https://golang.org/doc/install). Make sure to set up the `$PATH` and `$GOPATH` environment variables as described in bash below, and to understand the expected contents of the three `$GOPATH` subdirectories: `$GOPATH/src`, `$GOPATH/pkg`, and `$GOPATH/bin`.
+  ```
+  export GOROOT=/usr/local/go # Set $GOROOT to whatever your installation directory for go is, eg. /usr/local/go
+  export PATH=$PATH:$GOROOT/bin # Append go bin to path
+  export GOPATH=$HOME/go # Set $GOPATH to where you want your go source (src), binaries (bin), and packaged (pkg) to lie, eg. $HOME/go
+  ```
 2. [Install gcc](https://gcc.gnu.org/install/).
 3. [Install sqlite3](https://www.tutorialspoint.com/sqlite/sqlite_installation.htm).
 4. [Install dep](https://golang.github.io/dep/docs/installation.html).
@@ -77,7 +82,7 @@ See `install_dep.sh` for an example of the installation of steps 3-7. It s not r
   ```
 3. Set the path for for the database and its configuration file.
   ```
-  $ export POP_PATH=$GOPATH/src/github.com/CanDIG/go-model-service/model-vs/database
+  $ export POP_PATH=$GOPATH/src/github.com/CanDIG/go-model-service/database
   ```
 3. Create a sqlite3 development database and migrate it to the schema defined in the `model-vs/data` directory, using the pop CLI tool `soda`:
   ```
