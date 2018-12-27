@@ -4,8 +4,6 @@
 package handlers
 
 import (
-	datamodels "github.com/CanDIG/go-model-service/model-vs/data/models"
-
 	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
 
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/operations"
@@ -27,7 +25,7 @@ func GetIndividualsByVariant(params operations.GetIndividualsByVariantParams) mi
 		return operations.NewGetIndividualsByVariantInternalServerError().WithPayload(errPayload)
 	}
 
-	_, err := utilities.GetVariantByID(params.VariantID.String(), tx)
+	dataVariant, err := utilities.GetVariantByID(params.VariantID.String(), tx)
 	if err != nil {
 		message := "The Variant by which you are trying to query by cannot be found."
 		errors.Log(err, 404, funcName, message)
@@ -35,22 +33,15 @@ func GetIndividualsByVariant(params operations.GetIndividualsByVariantParams) mi
 		return operations.NewGetIndividualsByVariantNotFound().WithPayload(errPayload)
 	}
 
-	// the full error response is handled here rather than the payload because a variety of http codes may occur
-	query, errResponse := utilities.GetIndividualsByVariant(params, tx)
-	if errResponse != nil {
-		return errResponse
-	}
-
-	var dataIndividuals []datamodels.Individual
-	err = query.All(&dataIndividuals)
+	err = tx.Load(dataVariant, "Individuals")
 	if err != nil {
-		errors.Log(err, 500, funcName, "Problems getting Individuals from database")
+		errors.Log(err, 500, funcName, "Problems loading individuals from variant in database")
 		errPayload := errors.DefaultInternalServerError()
 		return operations.NewGetIndividualsByVariantInternalServerError().WithPayload(errPayload)
 	}
 
 	var apiIndividuals []*apimodels.Individual
-	for _, dataIndividual := range dataIndividuals {
+	for _, dataIndividual := range dataVariant.Individuals {
 		apiIndividual, errPayload := individualDataToAPIModel(dataIndividual)
 		if errPayload != nil {
 			return operations.NewGetIndividualsByVariantInternalServerError().WithPayload(errPayload)
@@ -69,7 +60,7 @@ func GetVariantsByIndividual(params operations.GetVariantsByIndividualParams) mi
 	if errPayload != nil {
 		return operations.NewGetVariantsByIndividualInternalServerError().WithPayload(errPayload)
 	}
-	_, err := utilities.GetIndividualByID(params.IndividualID.String(), tx)
+	dataIndividual, err := utilities.GetIndividualByID(params.IndividualID.String(), tx)
 	if err != nil {
 		message := "The Variant by which you are trying to query by cannot be found."
 		errors.Log(err, 404, funcName, message)
@@ -77,21 +68,15 @@ func GetVariantsByIndividual(params operations.GetVariantsByIndividualParams) mi
 		return operations.NewGetVariantsByIndividualNotFound().WithPayload(errPayload)
 	}
 
-	// the full error response is handled here rather than the payload because a variety of http codes may occur
-	query, errResponse := utilities.GetVariantsByIndividual(params, tx)
-	if errResponse != nil {
-		return errResponse
+	err = tx.Load(dataIndividual, "Variants")
+	if err != nil {
+		errors.Log(err, 500, funcName, "Problems loading variants from individual in database")
+		errPayload := errors.DefaultInternalServerError()
+		return operations.NewGetIndividualsByVariantInternalServerError().WithPayload(errPayload)
 	}
 
-	var dataVariants []datamodels.Variant
-	err = query.All(&dataVariants)
-	if err != nil {
-		errors.Log(err, 500, funcName, "Problems getting Variants from database")
-		errPayload := errors.DefaultInternalServerError()
-		return operations.NewGetVariantsByIndividualInternalServerError().WithPayload(errPayload)
-	}
 	var apiVariants []*apimodels.Variant
-	for _, dataVariant := range dataVariants {
+	for _, dataVariant := range dataIndividual.Variants {
 		apiVariant, errPayload := variantDataToAPIModel(dataVariant)
 		if errPayload != nil {
 			return operations.NewGetVariantsByIndividualInternalServerError().WithPayload(errPayload)
