@@ -60,21 +60,3 @@ func GetVariants(params operations.GetVariantsParams, tx *pop.Connection) (*pop.
 	query := tx.Where(conditions)
 	return query, nil
 }
-
-// GetIndividualsByVariant builds a query for all associated Individuals for a given Variant, given Call junctions.
-func GetIndividualsByVariant(params operations.GetIndividualsByVariantParams, tx *pop.Connection) (*pop.Query, middleware.Responder) {
-	sql := "SELECT i.* FROM calls c " +
-		"JOIN individuals i ON i.id = c.Individual " +
-		"WHERE c.Variant=?"
-	args := params.VariantID.String()
-	return tx.RawQuery(sql, args), nil
-}
-
-// GetVariantsByIndividual builds a query for all associated Variants for a given Individual, given Call junctions.
-func GetVariantsByIndividual(params operations.GetVariantsByIndividualParams, tx *pop.Connection) (*pop.Query, middleware.Responder) {
-	sql := "SELECT v.* FROM calls c " +
-		"JOIN variants v ON v.id = c.variant " +
-		"WHERE c.individual=?"
-	args := params.IndividualID.String()
-	return tx.RawQuery(sql, args), nil
-}

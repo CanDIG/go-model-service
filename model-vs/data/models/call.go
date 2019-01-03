@@ -13,8 +13,8 @@ type Call struct {
 	ID         uuid.UUID `json:"id" db:"id"`
 	CreatedAt  time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt  time.Time `json:"updated_at" db:"updated_at"`
-	Individual uuid.UUID `json:"individual" db:"individual"`
-	Variant    uuid.UUID `json:"variant" db:"variant"`
+	Individual uuid.UUID `json:"individual_id" db:"individual_id"`
+	Variant    uuid.UUID `json:"variant_id" db:"variant_id"`
 	Genotype   string    `json:"genotype" db:"genotype"`
 	Format     string    `json:"format" db:"format"`
 }

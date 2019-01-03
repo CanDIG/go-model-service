@@ -14,6 +14,7 @@ type Individual struct {
 	CreatedAt   time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
 	Description string    `json:"description" db:"description"`
+	Variants	Variants  `many_to_many:"calls"`
 }
 
 // String is not required by pop and may be deleted
