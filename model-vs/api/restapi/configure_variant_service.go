@@ -11,6 +11,7 @@ import (
 
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/operations"
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/handlers"
+	"github.com/CanDIG/go-model-service/tools/log"
 )
 
 //go:generate swagger generate server --target .. --name model-vs --spec ../swagger.yml
@@ -20,6 +21,9 @@ func configureFlags(api *operations.VariantServiceAPI) {
 }
 
 func configureAPI(api *operations.VariantServiceAPI) http.Handler {
+	// Initialize custom logger. Configuration to the logger can be made here through this (or a similar) function
+	log.Init()
+
 	// configure the api here
 	api.ServeError = errors.ServeError
 

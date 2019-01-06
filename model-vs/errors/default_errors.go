@@ -1,3 +1,8 @@
+/*
+Package errors implements error reporting functionality that is commonly used within this project.
+Its purpose is to standardize generic error reports, both for external use via API responses and for
+internal use via logging.
+ */
 package errors
 
 import (

@@ -1,10 +1,12 @@
 package generics
 
 import (
+	"github.com/sirupsen/logrus"
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/operations"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/CanDIG/go-model-service/model-vs/errors"
-		"github.com/CanDIG/go-model-service/model-vs/api/restapi/utilities"
+	"github.com/CanDIG/go-model-service/tools/log"
+	"github.com/CanDIG/go-model-service/model-vs/api/restapi/utilities"
 	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
 	datamodels "github.com/CanDIG/go-model-service/model-vs/data/models"
 )
@@ -12,9 +14,7 @@ import (
 // GetIndividuals returns all Individuals in the database given zero or more query parameters.
 // The query parameters are handled separately in getIndividualsQuery.
 func GetIndividuals(params operations.GetIndividualsParams) middleware.Responder {
-	funcName := "handlers.GetIndividuals"
-
-	tx, errPayload := utilities.ConnectDevelopment(funcName)
+	tx, errPayload := utilities.ConnectDevelopment(params.HTTPRequest)
 	if errPayload != nil {
 		return operations.NewPostIndividualInternalServerError().WithPayload(errPayload)
 	}
@@ -28,14 +28,14 @@ func GetIndividuals(params operations.GetIndividualsParams) middleware.Responder
 	var dataIndividuals []datamodels.Individual
 	err := query.All(&dataIndividuals)
 	if err != nil {
-		errors.Log(err, 500, funcName, "Problems getting Individuals from database")
+		log.Write(params.HTTPRequest, 500000, err).Error("Problems getting Individuals from database")
 		errPayload := errors.DefaultInternalServerError()
 		return operations.NewGetIndividualsInternalServerError().WithPayload(errPayload)
 	}
 
 	var apiIndividuals []*apimodels.Individual
 	for _, dataIndividual := range dataIndividuals {
-		apiIndividual, errPayload := individualDataToAPIModel(dataIndividual)
+		apiIndividual, errPayload := individualDataToAPIModel(dataIndividual, params.HTTPRequest)
 		if errPayload != nil {
 			return operations.NewGetIndividualsInternalServerError().WithPayload(errPayload)
 		}
