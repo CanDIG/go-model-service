@@ -1,3 +1,10 @@
+# ignore vim recovery files
+*.swp
+*.swo
+
+# ignore IDE data
+.idea
+
 # ignore vendore directory that is set up atutomatically
 # by running `dep ensure`
 vendor
