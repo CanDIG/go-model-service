@@ -4,7 +4,7 @@ import (
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/operations"
 	"github.com/gobuffalo/pop"
 	"fmt"
-	"github.com/CanDIG/go-model-service/model-vs/errors"
+	"github.com/CanDIG/go-model-service/tools/log"
 	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
 	"github.com/go-openapi/runtime/middleware"
 )
@@ -35,8 +35,6 @@ func GetCalls(params operations.GetCallsParams, tx *pop.Connection) (*pop.Query,
 // large amount of data and would likely only be entered in error or in malice.
 // May return a 403: Forbidden response.
 func GetVariants(params operations.GetVariantsParams, tx *pop.Connection) (*pop.Query, middleware.Responder) {
-	funcName := "handlers.getVariantsQuery"
-
 	conditions := ""
 
 	if params.Chromosome != nil {
@@ -52,8 +50,10 @@ func GetVariants(params operations.GetVariantsParams, tx *pop.Connection) (*pop.
 	if conditions == "" {
 		message := "Forbidden to query for all variants. " +
 			"Please provide parameters in the query string for 'chromosome', 'start', and/or 'end'."
-		errors.Log(nil, 403, funcName, message)
-		errPayload := &apimodels.Error{Code: 403001, Message: &message}
+		code := 403001
+
+		log.Write(params.HTTPRequest, code, nil).Warn(message)
+		errPayload := &apimodels.Error{Code: int64(code), Message: &message}
 		return nil, operations.NewGetVariantsForbidden().WithPayload(errPayload)
 	}
 
