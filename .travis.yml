@@ -26,4 +26,4 @@ install:
  - . ./install.sh
 
 script:
- - dredd --config model-vs/api/dredd.yml --hookfiles model-vs/api/dreddhooks.py -l verbose
+ - dredd --config model-vs/api/dredd.yml --hookfiles model-vs/api/dreddhooks.py -l warning
