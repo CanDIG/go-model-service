@@ -30,7 +30,7 @@ Once you have [installed the stack](#installing-the-stack), run the following co
 
 - [Sqlite3](https://www.sqlite.org/index.html) database backend
 - [Go](https://golang.org/) (Golang) backend
-- Gobuffalo [pop](https://github.com/gobuffalo/pop) is used as an orm-like for interfacing between the go code and the sqlite3 database. The `soda` CLI auto-generates boilerplate Go code for models and migrations, as well as performing migrations on the database. `fizz` files are used for defining database migrations in a Go-like syntax (see [syntax documentation](https://github.com/markbates/pop/tree/master/fizz).)
+- Gobuffalo [pop](https://github.com/gobuffalo/pop) is used as an orm-like for interfacing between the go code and the sqlite3 database. The `soda` CLI auto-generates boilerplate Go code for models and migrations, as well as performing migrations on the database. `fizz` files are used for defining database migrations in a Go-like syntax (see [syntax documentation](https://gobuffalo.io/en/docs/db/fizz/).)
 - [Go-swagger](https://goswagger.io/) auto-generates boilerplate Go code from a `swagger.yml` API definition. [Swagger](https://swagger.io/) tooling is based on the [OpenAPI](https://www.openapis.org/) specification.
 - [dep](https://golang.github.io/dep/docs/introduction.html) is used for dependency management, specifically for libraries imported by Go code in the project.
 - [genny](https://github.com/CanDIG/genny) is a code-generation solution to generics in Go.
@@ -252,7 +252,7 @@ The connection to the data backend/memory store (ie. the ORM and/or database) sh
 
 Pop is an ORM-like that is used to interface between a go backend and one of several database languages. 
 
-See the [pop README](https://github.com/gobuffalo/pop#pop--) for installation and use instructions. There is also an [Unofficial pop Book](https://andrew-sledge.gitbooks.io/the-unofficial-pop-book/content/) with tutorials, [Quick Start](https://andrew-sledge.gitbooks.io/the-unofficial-pop-book/content/installation.html) being a good place to begin.
+See the [pop README](https://github.com/gobuffalo/pop#pop--) for installation and use instructions. Most documentation is now maintained at [gobuffalo.io](http://gobuffalo.io) in the `Database` section. There is also an [Unofficial pop Book](https://andrew-sledge.gitbooks.io/the-unofficial-pop-book/content/) with tutorials, [Quick Start](https://andrew-sledge.gitbooks.io/the-unofficial-pop-book/content/installation.html) being a good place to begin.
 
 Since the database used in this project is `sqlite3`, there are slight modifications that must be made to some commands in the form of a `-tags sqlite` option. These are detailed in the [Installing CLI Support](https://github.com/gobuffalo/pop#installing-cli-support) section of the Pop documentation.
 
@@ -260,7 +260,7 @@ Since the database used in this project is `sqlite3`, there are slight modificat
 
 Soda is a CLI tool for generating pop migration files and models, as well as for running up- and down-migrations. Migrations are described in `.fizz` or `.sql` files, and beyond simple migrations such as adding/dropping columns, these files must be manually populated with explicit migration instructions.
 
-Fizz provides a Go-like syntax for writing migrations, but [you may instead opt for writing SQL migrations as desired](https://github.com/gobuffalo/pop#generating-migrations). The fizz syntax is described [here](https://github.com/markbates/pop/tree/master/fizz).
+Fizz provides a Go-like syntax for writing migrations, but [you may instead opt for writing SQL migrations as desired](https://github.com/gobuffalo/pop#generating-migrations). The fizz syntax is described [here](https://gobuffalo.io/en/docs/db/fizz/).
 
 ##### Migrating Pop Models
 
