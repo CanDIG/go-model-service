@@ -189,26 +189,26 @@ all
 
 ## For Developers
 
-For your ease of adjustment to developing on this stack, and in particular to the amount of code generation involved in this Go project, instructions for using the code-gen tools have been provided here.
+This section contains tips and tricks for using the code-generation tools presented in this model service.
 
-Please note that most auto-generated code has been excluded from this repository, and that instead there are instructions for generating this code locally provided in the [Descriptive Installation](#descriptive-installation-of-the-go-model-service) section of this README. Binary files such as main and development.sqlite have also been excluded from this repository.
-The exclusions of these auto-generated and binary files is considered to be best form for version control repository maintenance. However, auto-generated files that are *not* generally re-generated (and are therefore safe to edit) should be pushed to this repository. `model-vs/api/restapi/configure_variant_service.go` and the `model-vs/data/models` package are examples of such safe-to-edit auto-generated code.
+Note that most auto-generated code has been excluded from this repository, and that instead there are instructions for generating this code locally provided in the [Descriptive Installation](#descriptive-installation-of-the-go-model-service) section of this README. Binary files such as main and development.sqlite have also been excluded from this repository.
+The exclusion of these files is considered to be best practice for version control repository maintenance. However, one-time auto-generated files that are *not* re-generated (and are therefore safe to edit) should be pushed to this repository. `model-vs/api/restapi/configure_variant_service.go` and the `model-vs/data/models` package are examples of such safe-to-edit auto-generated code.
 
 ### Dep
 
 In the initial installation of the service, the vendor-building step is run with `$ dep ensure -vendor-only`. This is to avoid modification of Gopkg.lock, which contains information about vital sub-packages for go-swagger that can not be explicitly constrained in Gopkg.toml.
 
-For example, package "github.com/go-openapi/runtime/flagext" is required by go-swagger but is *not* solved into Gopkg.lock if `dep ensure` is run prior to `swagger validate`. Therefore it is important to read the existing Gopkg.lock file in the initial installation, rather than solve for a new one.
+For example, package "github.com/go-openapi/runtime/flagext" is required by go-swagger but is *not* solved into Gopkg.lock if `dep ensure` is run (without the `vendor-only` tag) prior to `swagger validate`. Therefore it is important to read the existing Gopkg.lock file in the initial installation, rather than solve for a new one.
 
 For more information, see the [dep documentation](https://golang.github.io/dep/docs/ensure-mechanics.html).
 
 ### Go-Swagger
 
-Go-Swagger is a tool that automatically generates the boilderplate Go code needed to build a server, based on the API definitions for the service being provided by that server.
+Go-Swagger reads the API definitions for a service and automatically generates the boilerplate Go code needed to build the server.
 
 See [goswagger.io](https://goswagger.io/) for installation instructions, tutorials, use-cases, etc. If you find yourself having trouble with the installation, check the [prerequisites](https://goswagger.io/generate/requirements.html). The [Todo List Tutorial](https://goswagger.io/tutorial/todo-list.html) (Simple Server) is a good place to start if you've never used the go-swagger before. 
 
-Go-Swagger uses Swagger 2.0, which is based on the OpenAPI specification. "Swagger" and "OpenAPI" are often used interchangeably, which can be confusing when trying to learn the pertinent tool or set up your environment. See [this post](https://swagger.io/blog/api-strategy/difference-between-swagger-and-openapi/) for an explanation of the relationship between the two.
+Go-Swagger uses Swagger 2.0, which is based on the OpenAPI specification. "Swagger" and "OpenAPI" are often used interchangeably. See [this post](https://swagger.io/blog/api-strategy/difference-between-swagger-and-openapi/) for an explanation of the relationship between the two.
 
 #### Generating The Server
 
@@ -250,37 +250,39 @@ The connection to the data backend/memory store (ie. the ORM and/or database) sh
 
 ### GoBuffalo Pop
 
-Pop is an ORM-like that is used to interface between a go backend and one of several database languages. 
+Pop is an ORM-like that is used to interface between a go backend and a database.
 
-See the [pop README](https://github.com/gobuffalo/pop#pop--) for installation and use instructions. Most documentation is now maintained at [gobuffalo.io](http://gobuffalo.io) in the `Database` section. There is also an [Unofficial pop Book](https://andrew-sledge.gitbooks.io/the-unofficial-pop-book/content/) with tutorials, [Quick Start](https://andrew-sledge.gitbooks.io/the-unofficial-pop-book/content/installation.html) being a good place to begin.
+See the [pop README](https://github.com/gobuffalo/pop#pop--) for installation and use instructions. Most documentation is now maintained at [gobuffalo.io](https://gobuffalo.io/en/docs/db/getting-started/) in the `Database` section. There is also an [Unofficial pop Book](https://andrew-sledge.gitbooks.io/the-unofficial-pop-book/content/) with tutorials, [Quick Start](https://andrew-sledge.gitbooks.io/the-unofficial-pop-book/content/installation.html) being a good place to begin.
 
 Since the database used in this project is `sqlite3`, there are slight modifications that must be made to some commands in the form of a `-tags sqlite` option. These are detailed in the [Installing CLI Support](https://github.com/gobuffalo/pop#installing-cli-support) section of the Pop documentation.
 
 #### Pop Migrations
 
-Soda is a CLI tool for generating pop migration files and models, as well as for running up- and down-migrations. Migrations are described in `.fizz` or `.sql` files, and beyond simple migrations such as adding/dropping columns, these files must be manually populated with explicit migration instructions.
+Soda is a CLI tool for generating pop migration files and models, as well as for running up- and down-migrations. Migrations are described in `.fizz` or `.sql` files. Files for simple migrations such as adding/dropping columns are auto-generated by soda. For more complicated migrations, the migration files must be manually populated with explicit instructions.
 
-Fizz provides a Go-like syntax for writing migrations, but [you may instead opt for writing SQL migrations as desired](https://github.com/gobuffalo/pop#generating-migrations). The fizz syntax is described [here](https://gobuffalo.io/en/docs/db/fizz/).
+Fizz provides a Go-like syntax for writing migrations, but [you may instead opt to write SQL migrations](https://github.com/gobuffalo/pop#generating-migrations). The fizz syntax is described [here](https://gobuffalo.io/en/docs/db/fizz/).
 
 ##### Migrating Pop Models
 
-Soda can generate models in pop from command-line input, but these models must be manually edited when migrations cause modifications to the database table that a model corresponds to.
+*Note: Pop models are distinct from go-swagger models! Go-swagger models represent API calls in golang, while pop models represent database entities in golang. See the [go-swagger docs](https://goswagger.io/use/models/schemas.html) to read about go-swagger models.*
+
+Pop models are go files that describe database entities in terms of the go language. Each pop model corresponds to a table in the database. Soda can generate models from command-line input. When a migration modifies the database table that a model corresponds to, the associated model file must be manually edited.
 
 For example, if you add a `province` column to the `individual` table in a migration, the `individual.go` model must have that field added to its `type Individual struct`. You may also want to add validations for this new field in the `Validate` method of the `individual.go` model.
 
 #### Validating Pop Models
 
-`Validate` method contained in each model Go file is called upon each `ValidateAndSave` (or similar) call, to ensure that the data about to be entered in the database meets developer-defined constraints.
+The `Validate` method contained in each model Go file, called upon each `ValidateAndSave` (or similar) call, checks that the data being pushed to the database meets desired constraints.
 
-The `validators` package from Gobuffalo [validate](https://github.com/gobuffalo/validate) is the only set of validators automatically imported by Pop, but this `validate` framework allows for the creation of custom validators as needed. See the `tools/validators` directory for a simple example, or  the Unofficial pop Book's tutorial on [Writin Validations](https://andrew-sledge.gitbooks.io/the-unofficial-pop-book/content/advanced-topics/writing-validations.html) for a more complex example.
+The `validators` package from Gobuffalo [validate](https://github.com/gobuffalo/validate) is a set of validators automatically imported by Pop. The `validate` package also allows for the creation of custom validators. See the `tools/validators` directory for a simple example, or  the Unofficial pop Book's tutorial on [Writin Validations](https://andrew-sledge.gitbooks.io/the-unofficial-pop-book/content/advanced-topics/writing-validations.html) for a more complex example.
 
 #### Handling Nulls With Pop
 
-There is some complexity introduced in representing database tables with Go structs. Since Go only allows `nil` values for pointers, one must employ a work-around for handling nulls retrieved from the database, which is particularly necessary for validating their presence or absence.
+There is some subtlety to representing database tables with Go structs. Since Go only allows `nil` values for pointers, a work-around is needed to handle nulls retrieved from the database, or to validate on nulls in data being pushed to the database.
 
-By default, null-values from the database are transformed into Go's zero-values for a column that is represented in Go by a non-nillable type. For example, the `Chromosome` field of the `Variant` model (in `variant.go`) is of type string, and if a value for `chromosome` is not supplied in an entry, the value of the `Chromosome` field is `""`. The `validators` package used to validate *required* fields in pop only checks for these fields having a non-zero value.
+By default, for a db datatype that is pop-converted into a non-nillable type in Go, null-values from the database are transformed into zero-values. For example, the `Chromosome` field of the `Variant` model (in `variant.go`) is of type string, and if a value for `chromosome` is not supplied in an entry, the value of the `Chromosome` field is `""`. The validators that check *required* fields provided in the `validators` package only check for these fields having a non-zero value. Thus, no distinction is made between zero-valued entries such as `0` or `""` and `nil`. These validators are insufficient for cases where when zero-valued entries are acceptable but `nil` entries are not.
 
-This project uses the `pop/nulls` package to handle non-nullable fields that should be permitted to have zero values, such as the `Start` field of the `Variant` model. This field is of type nulls.Int, which is able to support null values (and therefore a custom `int_is_not_null.go` validator.)
+This project uses the `pop/nulls` package to handle non-nullable fields that should be permitted to have zero values, such as the `Start` field of the `Variant` model. This field is of type nulls.Int, which is able to differentiate between null values and zero values. A custom `int_is_not_null.go` validator is needed to validate this datatype.
 
 ### Genny
 
