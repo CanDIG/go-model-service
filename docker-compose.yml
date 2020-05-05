@@ -1,0 +1,20 @@
+# Build from project root with:
+#   docker-compose up
+
+# TODO write documentation pertaining to the .env file in the README
+
+version: "3.8"
+services:
+  gms-webapp:
+    build:
+      context: .
+      target: webapp
+    env_file:
+      - ./default.env
+    environment:
+      - POP_PATH="${GOPATH}/src/github.com/CanDIG/go-model-service
+      - API_PATH="${GOPATH}/src/github.com/CanDIG/go-model-service/model-vs/api"
+    volumes:
+      - .:$GOPATH/src/github.com/CanDIG/go-model-service
+    ports:
+      - "3000"
