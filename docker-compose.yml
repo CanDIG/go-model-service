@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  gms-webapp:
+    build:
+      context: .
+      target: webapp
+    env_file:
+      - ./webapp-default.env
+    volumes:
+      - .:$GOPATH/src/github.com/CanDIG/go-model-service
