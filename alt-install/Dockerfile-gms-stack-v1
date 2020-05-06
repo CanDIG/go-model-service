@@ -1,12 +1,15 @@
-### This Dockerfile generates the environment image that is
-### pulled by the main Dockerfile of the go-model-service app.
+### This Dockerfile generates the stack/dependency-containing image that is
+### pulled by the main Dockerfile of the v1 go-model-service app.
+
+# Build from project root with:
+# $ sudo docker build -t <docker-username>/gms-stack-v1 -f ./alt-install/Dockerfile-gms-stack-v1 .
 
 # TODO is GOPATH going to cause us issues?
 
 # Build stage
 FROM golang
 
-WORKDIR ${HOME}
+WORKDIR /
 
 # Install sqlite3 (database backend)
 RUN apt-get update && apt-get install -y \
@@ -18,9 +21,9 @@ RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh \
 	| sh
 
 # Install Go-swagger (code-gen of boilerplate server Go code from OpenAPI definition)
-RUN curl -o ${GOPATH}/bin/swagger -L'#' \
+RUN curl -o $GOPATH/bin/swagger -L'#' \
 	https://github.com/go-swagger/go-swagger/releases/download/0.16.0/swagger_linux_amd64
-RUN chmod +x ${GOPATH}/bin/swagger
+RUN chmod +x $GOPATH/bin/swagger
 
 
 # Install pop (ORM-like for interfacing with the database backend)
@@ -28,7 +31,7 @@ RUN chmod +x ${GOPATH}/bin/swagger
 RUN go get -u -v -tags sqlite \
 	github.com/gobuffalo/pop/...
 # soda is the pop CLI
-go install -tags sqlite \
+RUN go install -tags sqlite \
 	github.com/gobuffalo/pop/soda
 
 # Install genny (code-gen solution for generics in Go)

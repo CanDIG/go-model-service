@@ -3,10 +3,10 @@
 
 # TODO is GOPATH going to cause us issues?
 
-# TODO build env image
-FROM _ AS webapp
+# Modify this line if you want to use a different stack-image
+FROM katpavlov/gms-stack-v1 AS webapp
 
-WORKDIR ${GOPATH}/src/github.com/CanDIG/go-model-service
+WORKDIR /go/src/github.com/CanDIG/go-model-service
 COPY . .
 
 # Use the dep tool to install all project import dependencies in a
@@ -34,7 +34,7 @@ soda migrate up -c ./database.yml -e development -p model-vs/data/migrations
 # This will generate a server named variant-service. The name is important for 
 # maintaining compatibility with the configure_variant_service.go middleware 
 # configuration file.
-RUN -w ${API_PATH} swagger generate server -A variant-service swagger.yml
+RUN -w $API_PATH swagger generate server -A variant-service swagger.yml
 
 # Run a script to generate resource-specific request handlers for middleware,
 # from the generic handlers defined in the model-vs/api/generics package,
