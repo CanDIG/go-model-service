@@ -2,7 +2,11 @@
 ### pulled by the main Dockerfile of the v1 go-model-service app.
 
 # Build from project root with:
-# $ sudo docker build -t <docker-username>/gms-stack-v1 -f ./alt-install/Dockerfile-gms-stack-v1 .
+# 	docker build -t <docker-username>/gms-stack-v1 -f ./alt-install/Dockerfile-gms-stack-v1 .
+# Run resulting container from project root with:
+# 	docker run -it --rm <docker-username>/gms-stack-v1
+# Push to docker hub:
+# 	docker login && docker push <docker-username>/gms-stack-v1
 
 # TODO is GOPATH going to cause us issues?
 
@@ -10,6 +14,7 @@
 FROM golang
 
 WORKDIR /
+ENV GOPATH=/go
 
 # Install sqlite3 (database backend)
 RUN apt-get update && apt-get install -y \

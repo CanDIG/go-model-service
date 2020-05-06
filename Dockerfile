@@ -26,22 +26,23 @@ RUN dep ensure -vendor-only
 # TODO fix this to suit a persistent postgres database
 # Create a sqlite3 development database and migrate it to the schema
 # defined in the model-vs/data directory, using the soda tool from pop
-soda create -c ./database.yml -e development
-soda migrate up -c ./database.yml -e development -p model-vs/data/migrations
+RUN soda create -c ./database.yml -e development
+RUN soda migrate up -c ./database.yml -e development -p model-vs/data/migrations
 
 # Swagger generate the boilerplate code necessary for handling API requests
 # from the model-vs/api/swagger.yml template file.
 # This will generate a server named variant-service. The name is important for 
 # maintaining compatibility with the configure_variant_service.go middleware 
 # configuration file.
-RUN -w $API_PATH swagger generate server -A variant-service swagger.yml
+RUN cd $API_PATH && swagger generate server -A variant-service swagger.yml
 
 # Run a script to generate resource-specific request handlers for middleware,
 # from the generic handlers defined in the model-vs/api/generics package,
 # using the CanDIG-maintained CLI tool genny
 RUN $API_PATH/generate_handlers.sh
 
-# Now that all the necessary boilerplate code has been auto-generated, compile the server
+# Now that all the necessary boilerplate code has been auto-generated, compile 
+# the server
 RUN go build -tags sqlite -o ./main $API_PATH/cmd/variant-service-server/main.go
 
 # Run the variant service

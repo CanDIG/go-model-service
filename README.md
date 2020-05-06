@@ -80,27 +80,27 @@ See `install_dep.sh` for an example of the installation of steps 3-7. It s not r
   $ cd $GOPATH/src/github.com/CanDIG/go-model-service
   $ dep ensure -vendor-only
   ```
-3. Set the path for for the database and its configuration file.
+3. Set the path for for the database and its configuration file. Read more about the `POP_PATH` variable [here](https://github.com/CanDIG/go-model-service/tree/upgrade-stack#pop_path).
   ```
   $ export POP_PATH=$GOPATH/src/github.com/CanDIG/go-model-service/database
   ```
-3. Create a sqlite3 development database and migrate it to the schema defined in the `model-vs/data` directory, using the pop CLI tool `soda`:
+4. Create a sqlite3 development database and migrate it to the schema defined in the `model-vs/data` directory, using the pop CLI tool `soda`:
   ```
   $ cd $GOPATH/src/github.com/CanDIG/go-model-service
   $ soda create -c ./database.yml -e development
   $ soda migrate up -c ./database.yml -e development -p model-vs/data/migrations
   ```
-4. Generate the boilerplate code necessary for handling API requests, from the `model-vs/api/swagger.yml` template file, with the Go-swagger CLI tool `swagger`. The following commands will generate a server named `variant-service`. This name is important for maintaining compatibility with the `configure_variant_service.go` middleware configuration file.
+5. Generate the boilerplate code necessary for handling API requests, from the `model-vs/api/swagger.yml` template file, with the Go-swagger CLI tool `swagger`. The following commands will generate a server named `variant-service`. This name is important for maintaining compatibility with the `configure_variant_service.go` middleware configuration file.
   ```
   $ cd $GOPATH/src/github.com/CanDIG/go-model-service/model-vs/api
   $ swagger generate server -A variant-service swagger.yml
   ```
-5. Run a script to generate resource-specific request handlers for middleware, from the generic handlers defined in the `model-vs/api/generics` package, using the CanDIG-maintained CLI tool `genny`:
+6. Run a script to generate resource-specific request handlers for middleware, from the generic handlers defined in the `model-vs/api/generics` package, using the CanDIG-maintained CLI tool `genny`:
   ```
   $ cd $GOPATH/src/github.com/CanDIG/go-model-service/model-vs/api
   $ ./generate_handlers.sh
   ```
-6. Now that all the necessary boilerplate code has been auto-generated, compile the server by running:
+7. Now that all the necessary boilerplate code has been auto-generated, compile the server by running:
   ```
   $ cd $GOPATH/src/github.com/CanDIG/go-model-service
   $ go build -tags sqlite model-vs/api/cmd/variant-service-server/main.go
@@ -284,6 +284,14 @@ By default, for a db datatype that is pop-converted into a non-nillable type in 
 
 This project uses the `pop/nulls` package to handle non-nullable fields that should be permitted to have zero values, such as the `Start` field of the `Variant` model. This field is of type nulls.Int, which is able to differentiate between null values and zero values. A custom `int_is_not_null.go` validator is needed to validate this datatype.
 
+#### POP_PATH
+
+The database configuration file used by pop must be kept within one of the following paths, relative to the file attempting to connect with the database: 
+  ```
+  "", "./config", "/config", "../", "../config", "../..", "../../config", "APP_PATH", "POP_PATH"
+  ```
+Therefore the `POP_PATH` variable may be set to point to the folder containing the `database.yml` config file. See the [pop configuration code](https://github.com/gobuffalo/pop/blob/master/config.go) for more information.
+
 ### Genny
 
 Genny is a code-generation solution to the lack of generics in Go. We use it handle the myriad of similarly-named auto-generated go files created by the pop and Go-Swagger tools.
@@ -299,3 +307,14 @@ There remain several issues with the genny tool that block the complete integrat
 Dredd can use the `swagger.yml` api definitions to run automated testing on the API. It uses `example` headings defined in the swagger file to generate its input bodies and parameters.
 
 It can be helpful to only populate the examples with the required fields, to check that all non-required fields are handled properly for possible nil pointers.
+
+### Docker
+Docker containerizes processes so that they can be run in predictable environments, and minimize interference with the host environment. See the [Docker tutorial](https://docker-curriculum.com/) and [Dockerfile reference](https://docs.docker.com/engine/reference/builder/#add) for more information.
+
+Docker Compose automates the building of these containers. See the [tutorial](https://docs.docker.com/compose/gettingstarted/) and [reference](https://docs.docker.com/compose/compose-file/) documentation.
+
+It is common to run `docker` and `docker-compose` commands as `sudo`, because the socket used by the Docker daemon is owned by the `root` user. There is a noteworthy downside to running  commands as `sudo`: environment variables are not kept by default. This especially causes problems when building go services, which often depend upon the `$GOPATH` environment variable.
+
+There are two solutions to this issue.
+1) Always run sudo with the `-E` option (ie. `sudo -E <command>`) to explicitly preserve environment variables.
+2) Create a user group to act as `root` when docker is run, as detailed [here](https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user). Be sure to read about the [security consequences](https://docs.docker.com/engine/security/security/#docker-daemon-attack-surface) in advance of doing this!

@@ -38,4 +38,4 @@ model-vs/data/migrations/schema.sql
 # It is very important that sensitive environment data be
 # kept out of source control.
 *.env
-!webapp-default.env
+!default.env
