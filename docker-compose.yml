@@ -2,6 +2,7 @@
 #   docker-compose up
 
 # TODO write documentation pertaining to the .env file in the README
+# TODO replace ${GOPATH_SPECIAL} with ${GOPATH} when a better bugfix it found
 
 version: "3.8"
 services:
@@ -10,11 +11,11 @@ services:
       context: .
       target: webapp
     env_file:
-      - ./default.env
+      - .env
     environment:
-      - POP_PATH="${GOPATH}/src/github.com/CanDIG/go-model-service
-      - API_PATH="${GOPATH}/src/github.com/CanDIG/go-model-service/model-vs/api"
+      - POP_PATH=${GOPATH_SPECIAL}/src/github.com/CanDIG/go-model-service
+      - API_PATH=${GOPATH_SPECIAL}/src/github.com/CanDIG/go-model-service/model-vs/api
     volumes:
-      - .:$GOPATH/src/github.com/CanDIG/go-model-service
+      - .:${GOPATH_SPECIAL}/src/github.com/CanDIG/go-model-service
     ports:
       - "3000"
