@@ -5,17 +5,22 @@
 # TODO replace ${GOPATH_SPECIAL} with ${GOPATH} when a better bugfix it found
 
 version: "3.8"
+volumes:
+  vendor:
 services:
   gms-webapp:
     build:
       context: .
       target: webapp
+      args:
+        - API_PATH=${PROJECT_ROOT}/model-vs/api
     env_file:
       - .env
     environment:
-      - POP_PATH=${GOPATH_SPECIAL}/src/github.com/CanDIG/go-model-service
-      - API_PATH=${GOPATH_SPECIAL}/src/github.com/CanDIG/go-model-service/model-vs/api
+      - POP_PATH=${PROJECT_ROOT}
+      - APP_PATH=${PROJECT_ROOT}/model-vs
     volumes:
-      - .:${GOPATH_SPECIAL}/src/github.com/CanDIG/go-model-service
+      - .:${PROJECT_ROOT}
+      - vendor:${PROJECT_ROOT}/vendor
     ports:
       - "3000"
