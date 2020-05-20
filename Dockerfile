@@ -31,17 +31,14 @@ RUN cd "$API_PATH" && swagger generate server -A variant-service swagger.yml
 # Run a script to generate resource-specific request handlers for middleware,
 # from the generic handlers defined in the model-vs/api/generics package,
 # using the CanDIG-maintained CLI tool genny
-###RUN $API_PATH/generate_handlers.sh
+RUN "$API_PATH"/generate_handlers.sh
 
 # Now that all the necessary boilerplate code has been auto-generated, compile 
 # the server
-###RUN go build -tags sqlite -o ./main $API_PATH/cmd/variant-service-server/main.go
-
-#TODO rm
-RUN ls
+RUN go build -tags sqlite -o ./main "$API_PATH"/cmd/variant-service-server/main.go
 
 # Run the variant service
-###EXPOSE 3000
-###ENTRYPOINT "./main" --port=3000
+EXPOSE 3000
+ENTRYPOINT ./main --port=3000
 
 # TODO write dockerignore file

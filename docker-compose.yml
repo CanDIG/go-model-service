@@ -18,4 +18,4 @@ services:
       - POP_PATH=${PROJECT_ROOT}
       - APP_PATH=${PROJECT_ROOT}/model-vs
     ports:
-      - "3000"
+      - "0.0.0.0:3000:3000"
