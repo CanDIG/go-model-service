@@ -1,0 +1,33 @@
+### This is Dockerfile builds the dependencies for the go-model-service
+
+# Build from project root with:
+# 	docker build -t <docker-username>/gms-deps-v1 -f ./Dockerfile-gms-deps-v1 .
+# Run resulting container from project root with:
+# 	docker run -it --rm <docker-username>/gms-deps-v1
+# Push to docker hub:
+# 	docker login && docker push <docker-username>/gms-deps-v1
+
+# Note that if you are pushing this image, you want to check that
+# your .dockerignore file for this build does NOT ignore the /vendor/ directory.
+
+# TODO is GOPATH going to cause us issues?
+
+# Modify this line if you want to use a different stack-image
+FROM katpavlov/gms-stack-v1 as gms-deps-v1
+
+WORKDIR /go/src/github.com/CanDIG/go-model-service
+COPY ./Gopkg.lock ./Gopkg.toml ./
+
+# Use the dep tool to install all project import dependencies in a
+# new vendor directory.
+# It is run vendor-only to avoid modification of Gopkg.lock, which
+# contains information about vital sub-packages for go-swagger that
+# can not be explicitly constrained in Gopkg.toml.
+# For example, package "github.com/go-openapi/runtime/flagext" is
+# required by go-swagger but is *not* solved into Gopkg.lock if
+# `dep ensure` is run prior to `swagger validate`. Therefore it is
+# important to read the existing Gopkg.lock file in the initial
+# installation, rather than solve for a new one.
+# For more information, see: 
+# https://golang.github.io/dep/docs/ensure-mechanics.html
+RUN dep ensure -vendor-only
