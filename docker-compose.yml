@@ -5,8 +5,6 @@
 # TODO replace ${GOPATH_SPECIAL} with ${GOPATH} when a better bugfix it found
 
 version: "3.8"
-volumes:
-  vendor:
 services:
   gms-webapp:
     build:
@@ -19,8 +17,5 @@ services:
     environment:
       - POP_PATH=${PROJECT_ROOT}
       - APP_PATH=${PROJECT_ROOT}/model-vs
-    volumes:
-      - .:${PROJECT_ROOT}
-      - vendor:${PROJECT_ROOT}/vendor
     ports:
       - "3000"
