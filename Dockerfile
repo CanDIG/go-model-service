@@ -23,8 +23,8 @@ RUN soda migrate up -c ./database.yml -e development -p model-vs/data/migrations
 
 # Swagger generate the boilerplate code necessary for handling API requests
 # from the model-vs/api/swagger.yml template file.
-# This will generate a server named variant-service. The name is important for 
-# maintaining compatibility with the configure_variant_service.go middleware 
+# This will generate a server named variant-service. The name is important for
+# maintaining compatibility with the configure_variant_service.go middleware
 # configuration file.
 RUN cd "$API_PATH" && swagger generate server -A variant-service swagger.yml
 
@@ -33,12 +33,12 @@ RUN cd "$API_PATH" && swagger generate server -A variant-service swagger.yml
 # using the CanDIG-maintained CLI tool genny
 RUN "$API_PATH"/generate_handlers.sh
 
-# Now that all the necessary boilerplate code has been auto-generated, compile 
+# Now that all the necessary boilerplate code has been auto-generated, compile
 # the server
 RUN go build -tags sqlite -o ./main "$API_PATH"/cmd/variant-service-server/main.go
 
 # Run the variant service
 EXPOSE 3000
-ENTRYPOINT ./main --port=3000
+ENTRYPOINT ./main --port=3000 --host=0.0.0.0
 
 # TODO write dockerignore file
