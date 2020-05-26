@@ -4,7 +4,7 @@
 # TODO write documentation pertaining to the .env file in the README
 # TODO replace ${GOPATH_SPECIAL} with ${GOPATH} when a better bugfix it found
 
-version: "3.8"
+version: "3.7"
 services:
   gms-webapp:
     build:
