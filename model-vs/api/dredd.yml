@@ -1,8 +1,5 @@
 dry-run: null
-hookfiles: ./model-vs/api/dreddhooks.py
 language: python
-sandbox: false
-server: ./main --port=3000
 server-wait: 2
 init: false
 custom: {}
@@ -17,8 +14,6 @@ details: false
 method: []
 color: true
 level: info
-timestamp: false
-silent: false
 path: []
 hooks-worker-timeout: 5000
 hooks-worker-connect-timeout: 1500
@@ -26,7 +21,8 @@ hooks-worker-connect-retry: 500
 hooks-worker-after-connect-wait: 500
 hooks-worker-term-timeout: 5000
 hooks-worker-term-retry: 500
-hooks-worker-handler-host: 127.0.0.1
 config: ./model-vs/api/dredd.yml
+hookfiles: ./model-vs/api/dreddhooks.py
 blueprint: ./model-vs/api/swagger.yml
-endpoint: 'http://127.0.0.1:3000'
+hooks-worker-handler-host: 127.0.0.1
+endpoint: 'http://0.0.0.0:3000'

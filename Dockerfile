@@ -40,5 +40,3 @@ RUN go build -tags sqlite -o ./main "$API_PATH"/cmd/variant-service-server/main.
 # Run the variant service
 EXPOSE 3000
 ENTRYPOINT ./main --port=3000 --host=0.0.0.0
-
-# TODO write dockerignore file

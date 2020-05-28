@@ -23,12 +23,15 @@ services:
 before_install:
  - docker --version
  - cp default.env .env
- - npm install -g dredd
- - sudo pip install dredd_hooks
 
 install:
  - docker-compose build
- - docker-compose up
+ - docker-compose up --detach
+
+before_script:
+ - npm install -g dredd
+ - sudo pip install dredd_hooks
+ - dredd --version
 
 script:
- - dredd --config model-vs/api/dredd.yml --hookfiles model-vs/api/dreddhooks.py -l warning
+ - dredd --config ./model-vs/api/dredd.yml --hookfiles ./model-vs/api/dreddhooks.py --loglevel warning
