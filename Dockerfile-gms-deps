@@ -1,0 +1,20 @@
+### This is Dockerfile builds the dependencies for the go-model-service
+
+# Build from project root with:
+# 	docker build -t <docker-username>/gms-deps-<version> -f ./Dockerfile-gms-deps .
+# Run resulting container from project root with:
+# 	docker run -it --rm <docker-username>/gms-deps-<version>
+# Push to docker hub:
+# 	docker login && docker push <docker-username>/gms-deps-<version>
+
+# TODO is GOPATH going to cause us issues?
+
+# Modify this line if you want to use a different stack-image
+FROM katpavlov/gms-stack-v1.1.0 as gms-deps-v1.1.0
+
+WORKDIR /go/src/github.com/CanDIG/go-model-service
+COPY ./go.mod ./go.sum ./
+
+# Use the mod tool to fetch/cache all project import dependencies into 
+# 	$GOPATH/pkg/mod
+RUN go mod download

@@ -2,16 +2,16 @@
 ### pulled by the main Dockerfile of the v1 go-model-service app.
 
 # Build from project root with:
-# 	docker build -t <docker-username>/gms-stack-v1 -f ./alt-install/Dockerfile-gms-stack-v1 .
+# 	docker build -t <docker-username>/gms-stack-<version> -f ./alt-install/Dockerfile-gms-stack .
 # Run resulting container from project root with:
-# 	docker run -it --rm <docker-username>/gms-stack-v1
+# 	docker run -it --rm <docker-username>/gms-stack-<version>
 # Push to docker hub:
-# 	docker login && docker push <docker-username>/gms-stack-v1
+# 	docker login && docker push <docker-username>/gms-stack-<version>
 
 # TODO is GOPATH going to cause us issues?
 
 # Build stage
-FROM golang
+FROM golang as gms-stack-v1.1.0
 
 WORKDIR /
 ENV GOPATH=/go
@@ -21,15 +21,10 @@ RUN apt-get update && apt-get install -y \
 	sqlite3 \
 	libsqlite3-dev
 
-# Install dep (managing project dependencies from Go import statements)
-RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh \
-	| sh
-
 # Install Go-swagger (code-gen of boilerplate server Go code from OpenAPI definition)
 RUN curl -o $GOPATH/bin/swagger -L'#' \
 	https://github.com/go-swagger/go-swagger/releases/download/0.16.0/swagger_linux_amd64
 RUN chmod +x $GOPATH/bin/swagger
-
 
 # Install pop (ORM-like for interfacing with the database backend)
 # Note the use of `-tags sqlite` in the install statement for the soda CLI
