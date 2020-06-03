@@ -4,7 +4,7 @@
 # TODO is GOPATH going to cause us issues?
 
 # Modify this line if you want to use a different stack/dependencies-image
-FROM katpavlov/gms-deps-v1.1.0 AS webapp
+FROM katpavlov/gms-deps-v1.1.1 AS webapp
 
 ARG API_PATH
 
