@@ -1,0 +1,44 @@
+### This is Dockerfile builds the stack & dependencies for the go-model-service
+
+# Build from project root with:
+# 	docker build -t <docker-username>/gms-deps-<version> -f ./Dockerfile-gms-deps .
+# Run resulting container from project root with:
+# 	docker run -it --rm <docker-username>/gms-deps-<version>
+# Push to docker hub:
+# 	docker login && docker push <docker-username>/gms-deps-<version>
+
+# TODO is GOPATH going to cause us issues?
+
+# Modify this line if you want to use a different stack-image
+FROM golang as gms-deps-v1.1.1
+
+ENV GOPATH=/go
+
+WORKDIR /go/src/github.com/CanDIG/go-model-service
+COPY ./go.mod ./go.sum ./
+
+# Use the mod tool to fetch/cache all project import dependencies into 
+# 	$GOPATH/pkg/mod
+RUN go mod download
+
+# Install Go-swagger (code-gen of boilerplate server Go code from OpenAPI definition)
+RUN go install "$GOPATH"/pkg/mod/github.com/go-swagger/go-swagger@v0.23.0/cmd/swagger
+
+# Install genny (code-gen solution for generics in Go)
+RUN go get github.com/CanDIG/genny
+
+# TODO remove the following lines once upgraded to Postgres
+# and move pop dependency into go.mod
+
+# Install sqlite3 (database backend)
+RUN apt-get update && apt-get install -y \
+	sqlite3 \
+	libsqlite3-dev
+
+# Install pop (ORM-like for interfacing with the database backend)
+# Note the use of `-tags sqlite` in the install statement for the soda CLI
+RUN go get -u -v -tags sqlite \
+	github.com/gobuffalo/pop/...
+# soda is the pop CLI
+RUN go install -tags sqlite \
+	github.com/gobuffalo/pop/soda

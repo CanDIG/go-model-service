@@ -14,12 +14,8 @@
 apt-get update
 apt-get install -y sqlite3 libsqlite3-dev
 
-# Install dep (managing project dependencies from Go import statements)
-curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-
 # Install Go-swagger (code-gen of boilerplate server Go code from OpenAPI definition)
-curl -o $GOPATH/bin/swagger -L'#' https://github.com/go-swagger/go-swagger/releases/download/0.16.0/swagger_linux_amd64
-chmod +x $GOPATH/bin/swagger
+go get github.com/go-swagger/go-swagger@v0.23.0
 
 # Install pop (ORM-like for interfacing with the database backend)
 # Note the use of `-tags sqlite` in the install statement for the soda CLI

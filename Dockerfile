@@ -4,7 +4,7 @@
 # TODO is GOPATH going to cause us issues?
 
 # Modify this line if you want to use a different stack/dependencies-image
-FROM katpavlov/gms-deps-v1 AS webapp
+FROM katpavlov/gms-deps-v1.1.1 AS webapp
 
 ARG API_PATH
 
@@ -13,7 +13,7 @@ COPY . .
 
 # Check that all dependencies are present.
 # See `./Dockerfile-gms-deps-v1` for more information.
-RUN dep ensure -vendor-only
+RUN go mod download
 
 # TODO fix this to suit a persistent postgres database
 # Create a sqlite3 development database and migrate it to the schema
