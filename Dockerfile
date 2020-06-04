@@ -35,7 +35,7 @@ RUN "$API_PATH"/generate_handlers.sh
 
 # Now that all the necessary boilerplate code has been auto-generated, compile
 # the server
-RUN go build -tags sqlite -o ./main "$API_PATH"/cmd/variant-service-server/main.go
+RUN go build -o ./main "$API_PATH"/cmd/variant-service-server/main.go
 
 # Run the variant service
 EXPOSE 3000
