@@ -15,13 +15,6 @@ COPY . .
 # See `./Dockerfile-gms-deps-v1` for more information.
 RUN go mod download
 
-# Create a sqlite3 development database and migrate it to the schema
-# defined in the model-vs/data directory, using the soda tool from pop.
-# wait-for-it waits for the Postgres DB to be ready to accept connections.
-RUN wait-for-it database:5432 --timeout=90 -- \
-	soda create -c ./database.yml -e development &&\
-	soda migrate up -c ./database.yml -e development -p model-vs/data/migrations
-
 # Swagger generate the boilerplate code necessary for handling API requests
 # from the model-vs/api/swagger.yml template file.
 # This will generate a server named variant-service. The name is important for

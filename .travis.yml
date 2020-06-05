@@ -26,6 +26,7 @@ before_install:
 
 install:
  - docker-compose up --detach
+ - ./migrate.sh
 
 before_script:
  - npm install -g dredd
