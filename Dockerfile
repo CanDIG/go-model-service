@@ -4,7 +4,7 @@
 # TODO is GOPATH going to cause us issues?
 
 # Modify this line if you want to use a different stack/dependencies-image
-FROM katpavlov/gms-deps-v1.1.1 AS webapp
+FROM katpavlov/gms-deps-v1.1.2 AS webapp
 
 ARG API_PATH
 
@@ -15,11 +15,12 @@ COPY . .
 # See `./Dockerfile-gms-deps-v1` for more information.
 RUN go mod download
 
-# TODO fix this to suit a persistent postgres database
 # Create a sqlite3 development database and migrate it to the schema
-# defined in the model-vs/data directory, using the soda tool from pop
-RUN soda create -c ./database.yml -e development
-RUN soda migrate up -c ./database.yml -e development -p model-vs/data/migrations
+# defined in the model-vs/data directory, using the soda tool from pop.
+# wait-for-it waits for the Postgres DB to be ready to accept connections.
+RUN wait-for-it database:5432 --timeout=90 -- \
+	soda create -c ./database.yml -e development &&\
+	soda migrate up -c ./database.yml -e development -p model-vs/data/migrations
 
 # Swagger generate the boilerplate code necessary for handling API requests
 # from the model-vs/api/swagger.yml template file.

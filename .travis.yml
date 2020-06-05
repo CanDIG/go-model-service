@@ -25,7 +25,6 @@ before_install:
  - cp default.env .env
 
 install:
- - docker-compose build
  - docker-compose up --detach
 
 before_script:

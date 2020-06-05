@@ -10,7 +10,7 @@
 # TODO is GOPATH going to cause us issues?
 
 # Modify this line if you want to use a different stack-image
-FROM golang as gms-deps-v1.1.1
+FROM golang as gms-deps-v1.1.2
 
 ENV GOPATH=/go
 
@@ -30,3 +30,8 @@ RUN go get github.com/CanDIG/genny
 # Install pop (ORM-like for interfacing with the database backend)
 # soda is the pop CLI
 RUN go install "$GOPATH"/pkg/mod/github.com/gobuffalo/pop@v4.13.1+incompatible/soda
+
+# Install shell script that tests and waits on the availability of a TCP port.
+# Helps to manage container dependencies without using docker stack/swarm/kubernetes
+RUN cp "$GOPATH"/pkg/mod/github.com/vishnubob/wait-for-it@v0.0.0-20200205023206-c096cface5fb/wait-for-it.sh /usr/local/bin/wait-for-it
+RUN chmod +x /usr/local/bin/wait-for-it

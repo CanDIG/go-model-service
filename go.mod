@@ -24,7 +24,7 @@ require (
 	github.com/go-sql-driver/mysql v1.4.0
 	github.com/go-swagger/go-swagger v0.23.0 // indirect
 	github.com/gobuffalo/envy v1.8.1
-	github.com/gobuffalo/fizz v1.0.9
+	github.com/gobuffalo/fizz v1.9.10
 	github.com/gobuffalo/genny v0.6.0 // indirect
 	github.com/gobuffalo/github_flavored_markdown v1.1.0
 	github.com/gobuffalo/makr v1.1.4
@@ -45,6 +45,7 @@ require (
 	github.com/markbates/inflect v1.0.0
 	github.com/mattn/go-colorable v0.0.9
 	github.com/mattn/go-isatty v0.0.3
+	github.com/mattn/go-sqlite3 v1.9.0
 	github.com/microcosm-cc/bluemonday v1.0.2
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/pkg/errors v0.9.1
@@ -60,6 +61,7 @@ require (
 	github.com/sirupsen/logrus v1.4.2
 	github.com/sourcegraph/annotate v0.0.0-20160123013949-f4cad6c6324d
 	github.com/sourcegraph/syntaxhighlight v0.0.0-20170531221838-bd320f5d308e
+	github.com/vishnubob/wait-for-it v0.0.0-20200205023206-c096cface5fb // indirect
 	golang.org/x/net v0.0.0-20200301022130-244492dfa37a
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e
 	golang.org/x/sys v0.0.0-20200302150141-5c8b2ff67527

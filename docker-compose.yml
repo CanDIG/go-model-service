@@ -6,6 +6,19 @@
 
 version: "3.7"
 services:
+  database:
+    image: "postgres" # use latest official postgres version
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+    volumes:
+      - database-data:/var/lib/postgresql/data/
   gms-webapp:
     build:
       context: .
