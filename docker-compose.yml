@@ -1,13 +1,15 @@
 # Build from project root with:
-#   docker-compose up
+#     docker-compose up
+# or, with forced re-build of apps:
+#     docker-compose up --force-recreate --build
 
 # TODO write documentation pertaining to the .env file in the README
-# TODO replace ${GOPATH_SPECIAL} with ${GOPATH} when a better bugfix it found
 
 version: "3.7"
 services:
   database:
-    image: "postgres" # use latest official postgres version
+    # Use postgres 11.7 image to match stable postgres-client debian
+    image: "postgres:11.7-alpine"
     env_file:
       - .env
     healthcheck:
@@ -34,18 +36,5 @@ services:
       - database
     ports:
       - "3000:3000"
-  database:
-    image: "postgres" # use latest official postgres version
-    env_file:
-      - .env
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    ports:
-      - "5432:5432"
-    volumes:
-      - database-data:/var/lib/postgresql/data/
 volumes:
   database-data:

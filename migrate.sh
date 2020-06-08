@@ -8,5 +8,4 @@
 
 docker-compose exec gms-webapp sh -c \
 	"wait-for-it database:5432 --timeout=45 -- \
-	soda create -c ./database.yml -e development &&\
 	soda migrate up -c ./database.yml -e development -p model-vs/data/migrations"
