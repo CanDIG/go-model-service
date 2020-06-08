@@ -10,7 +10,7 @@
 # TODO is GOPATH going to cause us issues?
 
 # Modify this line if you want to use a different stack-image
-FROM golang as gms-deps-v1.1.1
+FROM golang as gms-deps-v1.1.3
 
 ENV GOPATH=/go
 
@@ -27,18 +27,15 @@ RUN go install "$GOPATH"/pkg/mod/github.com/go-swagger/go-swagger@v0.23.0/cmd/sw
 # Install genny (code-gen solution for generics in Go)
 RUN go get github.com/CanDIG/genny
 
-# TODO remove the following lines once upgraded to Postgres
-# and move pop dependency into go.mod
-
-# Install sqlite3 (database backend)
-RUN apt-get update && apt-get install -y \
-	sqlite3 \
-	libsqlite3-dev
-
 # Install pop (ORM-like for interfacing with the database backend)
-# Note the use of `-tags sqlite` in the install statement for the soda CLI
-RUN go get -u -v -tags sqlite \
-	github.com/gobuffalo/pop/...
 # soda is the pop CLI
-RUN go install -tags sqlite \
-	github.com/gobuffalo/pop/soda
+RUN go install "$GOPATH"/pkg/mod/github.com/gobuffalo/pop@v4.13.1+incompatible/soda
+
+# Install Postgres client for interfacing with the database
+RUN apt-get update &&\
+	apt-get install -y postgresql-client
+
+# Install shell script that tests and waits on the availability of a TCP port.
+# Helps to manage container dependencies without using docker stack/swarm/kubernetes
+# RUN cp "$GOPATH"/pkg/mod/github.com/vishnubob/wait-for-it@v0.0.0-20200205023206-c096cface5fb/wait-for-it.sh /usr/local/bin/wait-for-it
+# RUN chmod +x /usr/local/bin/wait-for-it

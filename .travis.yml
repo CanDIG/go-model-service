@@ -25,8 +25,8 @@ before_install:
  - cp default.env .env
 
 install:
- - docker-compose build
  - docker-compose up --detach
+ - ./migrate.sh
 
 before_script:
  - npm install -g dredd
