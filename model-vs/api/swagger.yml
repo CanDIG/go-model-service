@@ -21,7 +21,6 @@ info:
   description: A model variant service demonstarting CanDIG API best practices
   title: A barebones service for variant calls
   version: 1.0.0
-# TODO should add this for versioning
 basePath: /v1
 produces:
 - application/json

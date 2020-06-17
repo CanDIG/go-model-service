@@ -1,27 +1,22 @@
-language: go
-go_import_path: github.com/CanDIG/go-model-service
+language: node_js
 
-go:
-  - "1.9"
-  - "1.10.x"
+node_js:
+  - node
 
 cache:
   directories:
-    - ~/node_modules
-    - ~/.nvm
+    - ~/build/CanDIG/go-model-service/node_modules
 
 addons:
   apt:
     packages:
-    - nodejs
-    - npm
     - docker-ce
-    update: true
 
 services:
  - docker
 
 before_install:
+ - npm root
  - docker --version
  - cp default.env .env
 
@@ -31,9 +26,7 @@ install:
 
 before_script:
  - npm install newman
- - node --version
- - npm --version
- - /home/travis/node_modules/.bin/newman --version
+ - ~/build/CanDIG/go-model-service/node_modules/.bin/newman --version
 
 script:
- - /home/travis/node_modules/.bin/newman run ./tests/go-model-service.postman_collection.json -d tests/postman-data.csv
+ - ~/build/CanDIG/go-model-service/node_modules/.bin/newman run ./tests/go-model-service.postman_collection.json -d tests/postman-data.csv
