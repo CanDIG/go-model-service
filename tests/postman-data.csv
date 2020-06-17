@@ -1,0 +1,4 @@
+description,chromosome,start,ref,alt,name,search_start,search_end,genotype,format
+"Subject 1","chr1",1,"G","A","rs6054257",1,10,"0/1","GQ:DP:HQ 48:1:51,51"
+"Subject 2","chr2",2,"C","T",,,,"1/0",
+"Subject 3","chr3",3,"T","C",,1,10,"1/1",

@@ -1,0 +1,1802 @@
+{
+	"info": {
+		"_postman_id": "22b32508-7133-47fe-98e2-5257ade3f243",
+		"name": "go-model-service",
+		"description": "A barebones service for variant calls demonstrating the Golang stack for CanDIG webapps",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "individuals",
+			"item": [
+				{
+					"name": "Post individuals",
+					"item": [
+						{
+							"name": "Add an individual to the database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5a90cef0-ce97-4f5b-8e40-d374ac7a572c",
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"const responseData = pm.response.json();",
+											"pm.collectionVariables.set(\"individual_id\", responseData.id);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"description\": \"{{description}}\"\n}",
+									"options": {
+										"raw": {}
+									}
+								},
+								"url": {
+									"raw": "{{scheme}}{{host}}{{base_path}}/individuals",
+									"host": [
+										"{{scheme}}{{host}}{{base_path}}"
+									],
+									"path": [
+										"individuals"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "New individual created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"description\": \"Subject 17\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/individuals",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"individuals"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Location",
+											"value": "<url>",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"description\": \"Subject 17\",\n\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\"created\": \"2017-07-21T17:32:28Z\"\n}"
+								},
+								{
+									"name": "Forbidden to overwrite individual in post",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"description\": \"Subject 17\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/individuals",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"individuals"
+											]
+										}
+									},
+									"status": "Method Not Allowed",
+									"code": 405,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Internal error - Individual not created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"description\": \"Subject 17\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/individuals",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"individuals"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								}
+							]
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Get individuals",
+					"item": [
+						{
+							"name": "Get specific individual",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2d26fecd-03cb-4cf5-b6e8-1e4b25e797b7",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{scheme}}{{host}}{{base_path}}/individuals/{{individual_id}}",
+									"host": [
+										"{{scheme}}{{host}}{{base_path}}"
+									],
+									"path": [
+										"individuals",
+										"{{individual_id}}"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Individual not found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/individuals/:individual_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"individuals",
+												":individual_id"
+											],
+											"variable": [
+												{
+													"key": "individual_id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Internal error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/individuals/:individual_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"individuals",
+												":individual_id"
+											],
+											"variable": [
+												{
+													"key": "individual_id"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Return individual",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/individuals/:individual_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"individuals",
+												":individual_id"
+											],
+											"variable": [
+												{
+													"key": "individual_id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"description\": \"Subject 17\",\n\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\"created\": \"2017-07-21T17:32:28Z\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Get all individuals",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "154d216a-611c-48f8-b8ba-07c428cba5d4",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{scheme}}{{host}}{{base_path}}/individuals",
+									"host": [
+										"{{scheme}}{{host}}{{base_path}}"
+									],
+									"path": [
+										"individuals"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Internal error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/individuals",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"individuals"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Return individuals",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/individuals",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"individuals"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[]"
+								}
+							]
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "variants",
+			"item": [
+				{
+					"name": "Post variants",
+					"item": [
+						{
+							"name": "Add a variant to the database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "10682d7a-4c24-46d2-9719-d47c43eeaf03",
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"const responseData = pm.response.json();",
+											"pm.collectionVariables.set(\"variant_id\", responseData.id);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"chromosome\": \"{{chromosome}}\",\n    \"start\": {{start}},\n    \"ref\": \"{{ref}}\",\n    \"alt\": \"{{alt}}\",\n    \"name\": \"{{name}}\"\n}",
+									"options": {
+										"raw": {}
+									}
+								},
+								"url": {
+									"raw": "{{scheme}}{{host}}{{base_path}}/variants",
+									"host": [
+										"{{scheme}}{{host}}{{base_path}}"
+									],
+									"path": [
+										"variants"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Internal error - Variant not created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"chromosome\": \"chr1\",\n    \"start\": 14370,\n    \"ref\": \"G\",\n    \"alt\": \"A\",\n    \"name\": \"rs6054257\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/variants",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"variants"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								},
+								{
+									"name": "New variant created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"chromosome\": \"chr1\",\n    \"start\": 14370,\n    \"ref\": \"G\",\n    \"alt\": \"A\",\n    \"name\": \"rs6054257\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/variants",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"variants"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Location",
+											"value": "<url>",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"chromosome\": \"chr1\",\n\t\"start\": 14370,\n\t\"ref\": \"G\",\n\t\"alt\": \"A\",\n\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\"name\": \"rs6054257\"\n}"
+								},
+								{
+									"name": "Forbidden to overwrite variant in put",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"chromosome\": \"chr1\",\n    \"start\": 14370,\n    \"ref\": \"G\",\n    \"alt\": \"A\",\n    \"name\": \"rs6054257\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/variants",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"variants"
+											]
+										}
+									},
+									"status": "Method Not Allowed",
+									"code": 405,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								}
+							]
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Get variants",
+					"item": [
+						{
+							"name": "Get specific variant",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "50e319ef-96b0-40b2-a923-87e82a9297f0",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{scheme}}{{host}}{{base_path}}/variants/{{variant_id}}",
+									"host": [
+										"{{scheme}}{{host}}{{base_path}}"
+									],
+									"path": [
+										"variants",
+										"{{variant_id}}"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Internal error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/variants/:variant_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"variants",
+												":variant_id"
+											],
+											"variable": [
+												{
+													"key": "variant_id"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Return variant",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/variants/:variant_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"variants",
+												":variant_id"
+											],
+											"variable": [
+												{
+													"key": "variant_id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"chromosome\": \"chr1\",\n\t\"start\": 14370,\n\t\"ref\": \"G\",\n\t\"alt\": \"A\",\n\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\"name\": \"rs6054257\"\n}"
+								},
+								{
+									"name": "Variant not found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/variants/:variant_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"variants",
+												":variant_id"
+											],
+											"variable": [
+												{
+													"key": "variant_id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Get many variants by genomic location",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "770a8704-c8f0-42eb-957a-cce10cbd2784",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{scheme}}{{host}}{{base_path}}/variants?chromosome={{chromosome}}&start={{search_start}}&end={{search_end}}",
+									"host": [
+										"{{scheme}}{{host}}{{base_path}}"
+									],
+									"path": [
+										"variants"
+									],
+									"query": [
+										{
+											"key": "chromosome",
+											"value": "{{chromosome}}",
+											"description": "Chromosome to search"
+										},
+										{
+											"key": "start",
+											"value": "{{search_start}}",
+											"description": "Position from which to begin search"
+										},
+										{
+											"key": "end",
+											"value": "{{search_end}}",
+											"description": "Position at which to end search"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Internal error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/variants?chromosome=<string>&start=<integer>&end=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"variants"
+											],
+											"query": [
+												{
+													"key": "chromosome",
+													"value": "<string>"
+												},
+												{
+													"key": "start",
+													"value": "<integer>"
+												},
+												{
+													"key": "end",
+													"value": "<integer>"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Return variants",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/variants?chromosome=<string>&start=<integer>&end=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"variants"
+											],
+											"query": [
+												{
+													"key": "chromosome",
+													"value": "<string>"
+												},
+												{
+													"key": "start",
+													"value": "<integer>"
+												},
+												{
+													"key": "end",
+													"value": "<integer>"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n\t{\n\t\t\"chromosome\": \"chr1\",\n\t\t\"start\": 14370,\n\t\t\"ref\": \"G\",\n\t\t\"alt\": \"A\",\n\t\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"name\": \"rs6054257\"\n\t},\n\t{\n\t\t\"chromosome\": \"chr1\",\n\t\t\"start\": 14370,\n\t\t\"ref\": \"G\",\n\t\t\"alt\": \"A\",\n\t\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"name\": \"rs6054257\"\n\t}\n]"
+								},
+								{
+									"name": "Forbidden to query for all variants",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/variants?chromosome=<string>&start=<integer>&end=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"variants"
+											],
+											"query": [
+												{
+													"key": "chromosome",
+													"value": "<string>"
+												},
+												{
+													"key": "start",
+													"value": "<integer>"
+												},
+												{
+													"key": "end",
+													"value": "<integer>"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Get all variants (forbidden)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "76e34670-7c02-43a5-8d7d-4ae02b557726",
+										"exec": [
+											"pm.test(\"Status code is 403\", function () {",
+											"    pm.response.to.have.status(403);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{scheme}}{{host}}{{base_path}}/variants",
+									"host": [
+										"{{scheme}}{{host}}{{base_path}}"
+									],
+									"path": [
+										"variants"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Internal error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/variants?chromosome=<string>&start=<integer>&end=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"variants"
+											],
+											"query": [
+												{
+													"key": "chromosome",
+													"value": "<string>"
+												},
+												{
+													"key": "start",
+													"value": "<integer>"
+												},
+												{
+													"key": "end",
+													"value": "<integer>"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Return variants",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/variants?chromosome=<string>&start=<integer>&end=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"variants"
+											],
+											"query": [
+												{
+													"key": "chromosome",
+													"value": "<string>"
+												},
+												{
+													"key": "start",
+													"value": "<integer>"
+												},
+												{
+													"key": "end",
+													"value": "<integer>"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n\t{\n\t\t\"chromosome\": \"chr1\",\n\t\t\"start\": 14370,\n\t\t\"ref\": \"G\",\n\t\t\"alt\": \"A\",\n\t\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"name\": \"rs6054257\"\n\t},\n\t{\n\t\t\"chromosome\": \"chr1\",\n\t\t\"start\": 14370,\n\t\t\"ref\": \"G\",\n\t\t\"alt\": \"A\",\n\t\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"name\": \"rs6054257\"\n\t}\n]"
+								},
+								{
+									"name": "Forbidden to query for all variants",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/variants?chromosome=<string>&start=<integer>&end=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"variants"
+											],
+											"query": [
+												{
+													"key": "chromosome",
+													"value": "<string>"
+												},
+												{
+													"key": "start",
+													"value": "<integer>"
+												},
+												{
+													"key": "end",
+													"value": "<integer>"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								}
+							]
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "calls",
+			"item": [
+				{
+					"name": "Post calls",
+					"item": [
+						{
+							"name": "Add a call to the database",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2bb404b7-83f6-4a05-ad36-c5757cd841d6",
+										"exec": [
+											"pm.test(\"Successful POST request\", function () {",
+											"    pm.response.to.have.status(201);",
+											"});",
+											"",
+											"const responseData = pm.response.json();",
+											"pm.collectionVariables.set(\"call_id\", responseData.id);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"individual_id\": \"{{individual_id}}\",\n    \"variant_id\": \"{{variant_id}}\",\n    \"genotype\": \"{{genotype}}\",\n    \"format\": \"{{format}}\"\n}",
+									"options": {
+										"raw": {}
+									}
+								},
+								"url": {
+									"raw": "{{scheme}}{{host}}{{base_path}}/calls",
+									"host": [
+										"{{scheme}}{{host}}{{base_path}}"
+									],
+									"path": [
+										"calls"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Internal error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"individual_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n    \"variant_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n    \"genotype\": \"0/1\",\n    \"format\": \"GQ:DP:HQ 48:1:51,51\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/calls",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"calls"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								},
+								{
+									"name": "New call created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"individual_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n    \"variant_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n    \"genotype\": \"0/1\",\n    \"format\": \"GQ:DP:HQ 48:1:51,51\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/calls",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"calls"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Location",
+											"value": "<url>",
+											"description": ""
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"individual_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\"variant_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\"genotype\": \"0/1\",\n\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\"created\": \"2017-07-21T17:32:28Z\",\n\t\"format\": \"GQ:DP:HQ 48:1:51,51\"\n}"
+								},
+								{
+									"name": "Cannot overwrite call",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"individual_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n    \"variant_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n    \"genotype\": \"0/1\",\n    \"format\": \"GQ:DP:HQ 48:1:51,51\"\n}"
+										},
+										"url": {
+											"raw": "{{baseUrl}}/calls",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"calls"
+											]
+										}
+									},
+									"status": "Method Not Allowed",
+									"code": 405,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								}
+							]
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Get calls",
+					"item": [
+						{
+							"name": "Get specific call",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "637326fa-2539-4db1-9ec3-a84b254387df",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{scheme}}{{host}}{{base_path}}/calls/{{call_id}}",
+									"host": [
+										"{{scheme}}{{host}}{{base_path}}"
+									],
+									"path": [
+										"calls",
+										"{{call_id}}"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Internal error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/calls/:call_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"calls",
+												":call_id"
+											],
+											"variable": [
+												{
+													"key": "call_id"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Return call",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/calls/:call_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"calls",
+												":call_id"
+											],
+											"variable": [
+												{
+													"key": "call_id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"individual_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\"variant_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\"genotype\": \"0/1\",\n\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\"created\": \"2017-07-21T17:32:28Z\",\n\t\"format\": \"GQ:DP:HQ 48:1:51,51\"\n}"
+								},
+								{
+									"name": "Call not found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/calls/:call_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"calls",
+												":call_id"
+											],
+											"variable": [
+												{
+													"key": "call_id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Get all calls",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "21a77dea-543e-49c8-93e2-a8fbaac0735f",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{scheme}}{{host}}{{base_path}}/calls",
+									"host": [
+										"{{scheme}}{{host}}{{base_path}}"
+									],
+									"path": [
+										"calls"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Internal error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/calls",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"calls"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Return calls",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/calls",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"calls"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "[\n\t{\n\t\t\"individual_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"variant_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"genotype\": \"0/1\",\n\t\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"created\": \"2017-07-21T17:32:28Z\",\n\t\t\"format\": \"GQ:DP:HQ 48:1:51,51\"\n\t},\n\t{\n\t\t\"individual_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"variant_id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"genotype\": \"0/1\",\n\t\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"created\": \"2017-07-21T17:32:28Z\",\n\t\t\"format\": \"GQ:DP:HQ 48:1:51,51\"\n\t}\n]"
+								}
+							]
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "associations",
+			"item": [
+				{
+					"name": "Get variants called in an individual",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c6c32cd2-6616-4310-abaa-7bc13ab58a62",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{scheme}}{{host}}{{base_path}}/individuals/{{individual_id}}/variants",
+							"host": [
+								"{{scheme}}{{host}}{{base_path}}"
+							],
+							"path": [
+								"individuals",
+								"{{individual_id}}",
+								"variants"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Return individuals",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/individuals/:individual_id/variants",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"individuals",
+										":individual_id",
+										"variants"
+									],
+									"variable": [
+										{
+											"key": "individual_id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n\t{\n\t\t\"chromosome\": \"chr1\",\n\t\t\"start\": 14370,\n\t\t\"ref\": \"G\",\n\t\t\"alt\": \"A\",\n\t\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"name\": \"rs6054257\"\n\t},\n\t{\n\t\t\"chromosome\": \"chr1\",\n\t\t\"start\": 14370,\n\t\t\"ref\": \"G\",\n\t\t\"alt\": \"A\",\n\t\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"name\": \"rs6054257\"\n\t}\n]"
+						},
+						{
+							"name": "Internal error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/individuals/:individual_id/variants",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"individuals",
+										":individual_id",
+										"variants"
+									],
+									"variable": [
+										{
+											"key": "individual_id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+						},
+						{
+							"name": "Individual does not exist",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/individuals/:individual_id/variants",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"individuals",
+										":individual_id",
+										"variants"
+									],
+									"variable": [
+										{
+											"key": "individual_id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get individuals with a given variant called",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4a7e7327-1df3-4e8e-a1ff-d2cba314f68d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{scheme}}{{host}}{{base_path}}/variants/{{variant_id}}/individuals",
+							"host": [
+								"{{scheme}}{{host}}{{base_path}}"
+							],
+							"path": [
+								"variants",
+								"{{variant_id}}",
+								"individuals"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Variant does not exist",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/variants/:variant_id/individuals",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"variants",
+										":variant_id",
+										"individuals"
+									],
+									"variable": [
+										{
+											"key": "variant_id"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+						},
+						{
+							"name": "Internal error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/variants/:variant_id/individuals",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"variants",
+										":variant_id",
+										"individuals"
+									],
+									"variable": [
+										{
+											"key": "variant_id"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n\t\"message\": \"<string>\",\n\t\"code\": \"<integer>\"\n}"
+						},
+						{
+							"name": "Return individuals",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/variants/:variant_id/individuals",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"variants",
+										":variant_id",
+										"individuals"
+									],
+									"variable": [
+										{
+											"key": "variant_id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n\t{\n\t\t\"description\": \"Subject 17\",\n\t\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"created\": \"2017-07-21T17:32:28Z\"\n\t},\n\t{\n\t\t\"description\": \"Subject 17\",\n\t\t\"id\": \"bf3ba75b-8dfe-4619-b832-31c4a087a589\",\n\t\t\"created\": \"2017-07-21T17:32:28Z\"\n\t}\n]"
+						}
+					]
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "219d495d-8553-472a-ab24-f806265101b1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "03565210-279c-421f-b3a9-3466be078458",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "501841ac-f0c2-49f9-b9bb-2fcb8f2febd6",
+			"key": "scheme",
+			"value": "http://",
+			"type": "string"
+		},
+		{
+			"id": "bf285b35-9496-424b-9e4e-9875edaa671a",
+			"key": "host",
+			"value": "0.0.0.0:3000",
+			"type": "string"
+		},
+		{
+			"id": "e58a1db6-610d-4be1-b68b-943c7df9037c",
+			"key": "base_path",
+			"value": "/v1",
+			"type": "string"
+		},
+		{
+			"id": "6bde4ea3-f57b-4b82-b0eb-b21c656121d5",
+			"key": "individual_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "893f2006-83ef-4147-a77f-e0660eca52f9",
+			"key": "variant_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "852f9c0f-3dea-41fa-ad5d-3eefb61843fe",
+			"key": "call_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "67eb3108-a899-49bb-b387-28fa6de8ae7e",
+			"key": "description",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "40b73421-0a68-413a-a99d-5203a19b280e",
+			"key": "chromosome",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "9e0564d0-3988-4f8b-9332-46f9bbfa88ef",
+			"key": "start",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "d8825e7b-923e-401a-8f20-4c6a5ff4ed01",
+			"key": "ref",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "dbdb8a09-052a-4a1e-a8ee-cace85b8a7d5",
+			"key": "alt",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "19c5e5f0-49f6-4c8c-816f-75bc4d2f1b85",
+			"key": "name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "d3cfc6f7-d59f-4250-8ff5-f82491c2f4d8",
+			"key": "search_start",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "2a550440-411b-42d1-9ce2-0d0da59eb8c2",
+			"key": "search_end",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "21bbe038-239d-45aa-bebd-ceeb5a0173d2",
+			"key": "genotype",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "7b967595-8bb5-40b8-a3a4-fc296da8ac51",
+			"key": "format",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
