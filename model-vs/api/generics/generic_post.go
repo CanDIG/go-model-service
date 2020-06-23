@@ -19,7 +19,7 @@ func PostIndividual(params operations.PostIndividualParams) middleware.Responder
 	}
 
 	_, err := utilities.GetIndividualByID(params.Individual.ID.String(), tx)
-	if err == nil { // TODO this is not a great check
+	if err == nil { //TODO this is not a great check
 		message := "This Individual already exists in the database. " +
 			"It cannot be overwritten with POST; please use PUT instead."
 		code := 405001
@@ -41,7 +41,7 @@ func PostIndividual(params operations.PostIndividualParams) middleware.Responder
 		return operations.NewPostIndividualInternalServerError().WithPayload(errPayload)
 	}
 
-	// TODO if errors occur from this point on, the Individual may have already been created,
+	//TODO if errors occur from this point on, the Individual may have already been created,
 	// so it should be deleted prior to return
 	retrievedDataIndividual, err := utilities.GetIndividualByID(newIndividual.ID.String(), tx)
 	if err != nil {

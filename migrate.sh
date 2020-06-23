@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TODO make this a makefile instead?
+#TODO make this a makefile instead?
 
 # Create a Postgres development database and migrate it to the schema
 # defined in the model-vs/data directory, using the soda tool from pop.

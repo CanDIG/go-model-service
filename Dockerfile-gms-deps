@@ -7,8 +7,6 @@
 # Push to docker hub:
 # 	docker login && docker push <docker-username>/gms-deps-<version>
 
-# TODO is GOPATH going to cause us issues?
-
 # Modify this line if you want to use a different stack-image
 FROM golang as gms-deps-v1.1.3
 

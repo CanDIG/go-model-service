@@ -9,9 +9,9 @@ import (
 	"strconv"
 )
 
-// TODO should we somehow configure api.logger in configure_variant_service.go ?
+//TODO make all of this initialization configurable
+// A good place to set the configurations may be in configure_variant_service.go
 
-// TODO make all of this initialization configurable
 // Init initializes the logger according to command-line-provided config parameters.
 func Init() {
 	// Log as JSON instead of the default ASCII formatter
@@ -22,7 +22,8 @@ func Init() {
 	logrus.SetLevel(logrus.WarnLevel)
 }
 
-// TODO log pid
+// TODO log pid (see issue #39)
+
 // Write employs logrus to produce a logger in a consistent format.
 // This logger extracts pertinent HTTP request information from the net/http Request parameter
 // provided in go-swagger auto-generated restapi/operations *_parameters.go files.

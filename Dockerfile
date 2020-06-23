@@ -1,8 +1,6 @@
 ### This is the main Dockerfile for the go-model-service app,
 ### excluding the database which is built seperately.
 
-# TODO is GOPATH going to cause us issues?
-
 # Modify this line if you want to use a different stack/dependencies-image
 FROM katpavlov/gms-deps-v1.1.3 AS webapp
 

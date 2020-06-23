@@ -37,6 +37,7 @@ func individualDataToAPIModel(dataIndividual datamodels.Individual, HTTPRequest 
 }
 
 //TODO is it really ok to have the validation occur here, with only a Save in configure_Individual_service following the Individual
+
 // individualAPIToDataModel transforms an api.models representation of the Individual from the Go-Swagger-
 // defined API to a data.models representation of the Individual from the pop ORM-like.
 // This allows for the movement of Individual data from the server to the database for POST/PUT/DELETE
