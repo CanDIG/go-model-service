@@ -3,11 +3,11 @@ package generics
 import (
 	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/operations"
-	"github.com/go-openapi/runtime/middleware"
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/utilities"
 	"github.com/CanDIG/go-model-service/model-vs/errors"
 	"github.com/CanDIG/go-model-service/tools/log"
-	)
+	"github.com/go-openapi/runtime/middleware"
+)
 
 // GetIndividualsByVariant returns all Individuals with a given Variant called.
 // Since Individuals and Variants have a many-to-many relationship, Calls are used as the relation/junction between them.

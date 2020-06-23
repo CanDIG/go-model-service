@@ -1,16 +1,12 @@
 ### This is Dockerfile builds the stack & dependencies for the go-model-service
 
-# Build from project root with:
-# 	docker build -t <docker-username>/gms-deps-<version> -f ./Dockerfile-gms-deps .
+# Build from project root and push to Docker Hub:
+# 	docker login && ./push-image.sh -f ./Dockerfile-gms-deps -u <username> gms-deps <patch>
 # Run resulting container from project root with:
-# 	docker run -it --rm <docker-username>/gms-deps-<version>
-# Push to docker hub:
-# 	docker login && docker push <docker-username>/gms-deps-<version>
-
-# TODO is GOPATH going to cause us issues?
+# 	docker run -it --rm <username>/gms-deps
 
 # Modify this line if you want to use a different stack-image
-FROM golang as gms-deps-v1.1.3
+FROM golang as gms-deps
 
 ENV GOPATH=/go
 

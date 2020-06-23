@@ -2,8 +2,8 @@
 #     docker-compose up
 # or, with forced re-build of apps:
 #     docker-compose up --force-recreate --build
-
-# TODO write documentation pertaining to the .env file in the README
+# Use push-image.sh to push images to Docker Hub:
+#     docker login && ./push-image.sh -f ./Dockerfile -u <username> gms-webapp <patch>
 
 version: "3.7"
 services:

@@ -4,13 +4,13 @@ package restapi
 
 import (
 	"crypto/tls"
-	"net/http"
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
+	"net/http"
 
-	"github.com/CanDIG/go-model-service/model-vs/api/restapi/operations"
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/handlers"
+	"github.com/CanDIG/go-model-service/model-vs/api/restapi/operations"
 	"github.com/CanDIG/go-model-service/tools/log"
 )
 

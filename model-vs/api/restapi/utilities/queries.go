@@ -1,12 +1,12 @@
 package utilities
 
 import (
-	"github.com/CanDIG/go-model-service/model-vs/api/restapi/operations"
-	"github.com/gobuffalo/pop"
 	"fmt"
-	"github.com/CanDIG/go-model-service/tools/log"
 	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
+	"github.com/CanDIG/go-model-service/model-vs/api/restapi/operations"
+	"github.com/CanDIG/go-model-service/tools/log"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/gobuffalo/pop"
 )
 
 // addAND only adds an AND to the given conditions string if it already has contents.
@@ -38,13 +38,13 @@ func GetVariants(params operations.GetVariantsParams, tx *pop.Connection) (*pop.
 	conditions := ""
 
 	if params.Chromosome != nil {
-		conditions = fmt.Sprintf(addAND(conditions) + "chromosome = '%s'", *params.Chromosome)
+		conditions = fmt.Sprintf(addAND(conditions)+"chromosome = '%s'", *params.Chromosome)
 	}
 	if params.Start != nil {
-		conditions = fmt.Sprintf(addAND(conditions) + "start >= '%d'", *params.Start)
+		conditions = fmt.Sprintf(addAND(conditions)+"start >= '%d'", *params.Start)
 	}
 	if params.End != nil {
-		conditions = fmt.Sprintf(addAND(conditions) + "start <= '%d'", *params.End)
+		conditions = fmt.Sprintf(addAND(conditions)+"start <= '%d'", *params.End)
 	}
 
 	if conditions == "" {

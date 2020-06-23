@@ -1,15 +1,15 @@
 /*
 Package utilities implements general-purpose utility functions for use by the restapi handlers.
- */
+*/
 
 package utilities
 
 import (
-	"net/http"
-	"github.com/gobuffalo/pop"
 	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
 	"github.com/CanDIG/go-model-service/model-vs/errors"
 	"github.com/CanDIG/go-model-service/tools/log"
+	"github.com/gobuffalo/pop"
+	"net/http"
 )
 
 // ConnectDevelopment connects to the development database and returns the connection and/or error message

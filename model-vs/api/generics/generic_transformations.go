@@ -8,9 +8,9 @@ import (
 	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
 	datamodels "github.com/CanDIG/go-model-service/model-vs/data/models"
 	"github.com/CanDIG/go-model-service/model-vs/errors"
+	"github.com/CanDIG/go-model-service/model-vs/transformers"
 	"github.com/CanDIG/go-model-service/tools/log"
 	"github.com/gobuffalo/pop"
-	"github.com/CanDIG/go-model-service/model-vs/transformers"
 )
 
 // individualDataToAPIModel transforms a data.models representation of the Individual from the pop ORM-like
@@ -37,6 +37,7 @@ func individualDataToAPIModel(dataIndividual datamodels.Individual, HTTPRequest 
 }
 
 //TODO is it really ok to have the validation occur here, with only a Save in configure_Individual_service following the Individual
+
 // individualAPIToDataModel transforms an api.models representation of the Individual from the Go-Swagger-
 // defined API to a data.models representation of the Individual from the pop ORM-like.
 // This allows for the movement of Individual data from the server to the database for POST/PUT/DELETE

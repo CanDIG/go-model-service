@@ -1,13 +1,13 @@
 package generics
 
 import (
-	"github.com/sirupsen/logrus"
+	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/operations"
-	"github.com/go-openapi/runtime/middleware"
+	"github.com/CanDIG/go-model-service/model-vs/api/restapi/utilities"
 	"github.com/CanDIG/go-model-service/model-vs/errors"
 	"github.com/CanDIG/go-model-service/tools/log"
-	"github.com/CanDIG/go-model-service/model-vs/api/restapi/utilities"
-	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/sirupsen/logrus"
 )
 
 // PostIndividual processes a Individual posted by the API request and creates it into the database.
@@ -19,7 +19,7 @@ func PostIndividual(params operations.PostIndividualParams) middleware.Responder
 	}
 
 	_, err := utilities.GetIndividualByID(params.Individual.ID.String(), tx)
-	if err == nil { // TODO this is not a great check
+	if err == nil { //TODO this is not a great check
 		message := "This Individual already exists in the database. " +
 			"It cannot be overwritten with POST; please use PUT instead."
 		code := 405001
@@ -41,7 +41,7 @@ func PostIndividual(params operations.PostIndividualParams) middleware.Responder
 		return operations.NewPostIndividualInternalServerError().WithPayload(errPayload)
 	}
 
-	// TODO if errors occur from this point on, the Individual may have already been created,
+	//TODO if errors occur from this point on, the Individual may have already been created,
 	// so it should be deleted prior to return
 	retrievedDataIndividual, err := utilities.GetIndividualByID(newIndividual.ID.String(), tx)
 	if err != nil {

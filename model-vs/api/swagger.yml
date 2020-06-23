@@ -349,7 +349,6 @@ definitions:
         type: string
         format: uuid
         description: Unique internal identifier
-        # TODO should we be scrambling this uuid
         example: bf3ba75b-8dfe-4619-b832-31c4a087a589
         readOnly: true
       created:

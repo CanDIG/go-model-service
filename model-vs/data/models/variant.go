@@ -2,25 +2,25 @@ package models
 
 import (
 	"encoding/json"
+	customValidators "github.com/CanDIG/go-model-service/tools/validators"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/pop/nulls"
 	"github.com/gobuffalo/uuid"
 	"github.com/gobuffalo/validate"
 	"github.com/gobuffalo/validate/validators"
-	customValidators "github.com/CanDIG/go-model-service/tools/validators"
 	"time"
 )
 
 type Variant struct {
-	ID         	uuid.UUID 	`json:"id" db:"id"`
-	CreatedAt  	time.Time 	`json:"created_at" db:"created_at"`
-	UpdatedAt  	time.Time 	`json:"updated_at" db:"updated_at"`
-	Name       	string    	`json:"name" db:"name"`
-	Chromosome 	string    	`json:"chromosome" db:"chromosome"`
-	Start      	nulls.Int 	`json:"start" db:"start"`
-	Ref        	string    	`json:"ref" db:"ref"`
-	Alt        	string    	`json:"alt" db:"alt"`
-	Individuals	Individuals `many_to_many:"calls"`
+	ID          uuid.UUID   `json:"id" db:"id"`
+	CreatedAt   time.Time   `json:"created_at" db:"created_at"`
+	UpdatedAt   time.Time   `json:"updated_at" db:"updated_at"`
+	Name        string      `json:"name" db:"name"`
+	Chromosome  string      `json:"chromosome" db:"chromosome"`
+	Start       nulls.Int   `json:"start" db:"start"`
+	Ref         string      `json:"ref" db:"ref"`
+	Alt         string      `json:"alt" db:"alt"`
+	Individuals Individuals `many_to_many:"calls"`
 }
 
 // String is not required by pop and may be deleted
