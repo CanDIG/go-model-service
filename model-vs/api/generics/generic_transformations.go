@@ -8,9 +8,9 @@ import (
 	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
 	datamodels "github.com/CanDIG/go-model-service/model-vs/data/models"
 	"github.com/CanDIG/go-model-service/model-vs/errors"
+	"github.com/CanDIG/go-model-service/model-vs/transformers"
 	"github.com/CanDIG/go-model-service/tools/log"
 	"github.com/gobuffalo/pop"
-	"github.com/CanDIG/go-model-service/model-vs/transformers"
 )
 
 // individualDataToAPIModel transforms a data.models representation of the Individual from the pop ORM-like

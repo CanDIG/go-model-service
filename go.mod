@@ -21,7 +21,7 @@ require (
 	github.com/go-openapi/strfmt v0.19.5
 	github.com/go-openapi/swag v0.19.8
 	github.com/go-openapi/validate v0.19.7
-	github.com/go-sql-driver/mysql v1.4.0
+	github.com/go-sql-driver/mysql v1.5.0
 	github.com/go-swagger/go-swagger v0.23.0 // indirect
 	github.com/gobuffalo/envy v1.8.1
 	github.com/gobuffalo/fizz v1.9.10
@@ -45,7 +45,7 @@ require (
 	github.com/markbates/inflect v1.0.0
 	github.com/mattn/go-colorable v0.0.9
 	github.com/mattn/go-isatty v0.0.3
-	github.com/mattn/go-sqlite3 v1.9.0
+	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	github.com/microcosm-cc/bluemonday v1.0.2
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/pkg/errors v0.9.1

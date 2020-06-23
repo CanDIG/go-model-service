@@ -1,14 +1,14 @@
 package generics
 
 import (
-	"github.com/sirupsen/logrus"
+	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/operations"
-	"github.com/go-openapi/runtime/middleware"
+	"github.com/CanDIG/go-model-service/model-vs/api/restapi/utilities"
+	datamodels "github.com/CanDIG/go-model-service/model-vs/data/models"
 	"github.com/CanDIG/go-model-service/model-vs/errors"
 	"github.com/CanDIG/go-model-service/tools/log"
-	"github.com/CanDIG/go-model-service/model-vs/api/restapi/utilities"
-	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
-	datamodels "github.com/CanDIG/go-model-service/model-vs/data/models"
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/sirupsen/logrus"
 )
 
 // GetIndividuals returns all Individuals in the database given zero or more query parameters.

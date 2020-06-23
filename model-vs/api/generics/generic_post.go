@@ -1,13 +1,13 @@
 package generics
 
 import (
-	"github.com/sirupsen/logrus"
+	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/operations"
-	"github.com/go-openapi/runtime/middleware"
+	"github.com/CanDIG/go-model-service/model-vs/api/restapi/utilities"
 	"github.com/CanDIG/go-model-service/model-vs/errors"
 	"github.com/CanDIG/go-model-service/tools/log"
-	"github.com/CanDIG/go-model-service/model-vs/api/restapi/utilities"
-	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/sirupsen/logrus"
 )
 
 // PostIndividual processes a Individual posted by the API request and creates it into the database.

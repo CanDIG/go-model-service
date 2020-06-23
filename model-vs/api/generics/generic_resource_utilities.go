@@ -1,8 +1,8 @@
 package generics
 
 import (
-	"github.com/gobuffalo/pop"
 	datamodels "github.com/CanDIG/go-model-service/model-vs/data/models"
+	"github.com/gobuffalo/pop"
 )
 
 // GetIndividualByID returns the Individual in the database corresponding to the given ID (or nil if no match is found)

@@ -9,7 +9,6 @@ import (
 
 //TODO generalize to nulls of any type
 
-
 // IntIsNotNull is a structure describing a named nullable int
 type IntIsNotNull struct {
 	Name  string

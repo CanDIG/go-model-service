@@ -1,7 +1,7 @@
 /*
 Package transformers implements model-to-model transformation functions that enable the movement and validation
 of data across different layers of the service stack.
- */
+*/
 package transformers
 
 import (

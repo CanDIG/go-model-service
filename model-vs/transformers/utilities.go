@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/gobuffalo/uuid"
-	)
+)
 
 // uuidAPIToData safely transforms a api-model UUID to a data-model UUID.
 // This never needs to be done for entity ID fields (primary keys), such as Resource.ID,

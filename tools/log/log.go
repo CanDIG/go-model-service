@@ -1,6 +1,6 @@
 /*
 Package log implements logrus-powered logging functionality
- */
+*/
 package log
 
 import (
@@ -17,11 +17,10 @@ func Init() {
 	// Log as JSON instead of the default ASCII formatter
 	logrus.SetFormatter(&logrus.JSONFormatter{})
 
-//	log.SetOutput()
+	//	log.SetOutput()
 
 	logrus.SetLevel(logrus.WarnLevel)
 }
-
 
 // TODO log pid
 // Write employs logrus to produce a logger in a consistent format.
@@ -29,10 +28,10 @@ func Init() {
 // provided in go-swagger auto-generated restapi/operations *_parameters.go files.
 func Write(HTTPRequest *http.Request, httpCode int, err error) *logrus.Entry {
 	entry := logrus.WithFields(logrus.Fields{
-		"service" :	"go-model-service",
-		"version" :	"0.0.1",
-		"host" :	HTTPRequest.Host,
-		"ip" :		HTTPRequest.RemoteAddr})
+		"service": "go-model-service",
+		"version": "0.0.1",
+		"host":    HTTPRequest.Host,
+		"ip":      HTTPRequest.RemoteAddr})
 
 	if httpCode != 0 {
 		entry = entry.WithField("httpCode", strconv.Itoa(httpCode))
