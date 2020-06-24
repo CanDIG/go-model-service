@@ -1,7 +1,9 @@
 ### This is Dockerfile builds the stack & dependencies for the go-model-service
 
 # Build from project root and push to Docker Hub:
-# 	docker login && ./push-image.sh -f ./Dockerfile-gms-deps -u <username> gms-deps <patch>
+# 	docker login && ./push-image.sh -b -f ./Dockerfile-gms-deps -u <username> gms-deps <patch>
+# Alternately, build locally without pushing:
+# 	docker build -t <username>/gms-webapp -f ./Dockerfile-gms-deps
 # Run resulting container from project root with:
 # 	docker run -it --rm <username>/gms-deps
 
