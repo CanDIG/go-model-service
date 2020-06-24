@@ -13,9 +13,8 @@ import (
 func addAND(conditions string) string {
 	if conditions == "" {
 		return ""
-	} else {
-		return conditions + " AND "
 	}
+	return conditions + " AND "
 }
 
 // GetIndividuals builds an Individuals-specific query out of the given parameters.

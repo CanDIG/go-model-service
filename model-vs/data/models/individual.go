@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+// The ORM-side representation of the Individual data object.
+// An individual whose variant data is present in the variant service.
 type Individual struct {
 	ID          uuid.UUID `json:"id" db:"id"`
 	CreatedAt   time.Time `json:"created_at" db:"created_at"`
