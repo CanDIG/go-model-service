@@ -20,7 +20,7 @@ type Variant struct {
 	Start       nulls.Int   `json:"start" db:"start"`
 	Ref         string      `json:"ref" db:"ref"`
 	Alt         string      `json:"alt" db:"alt"`
-	Individuals Individuals `many_to_many:"calls"`
+	Individuals Individuals `json:"individuals" many_to_many:"calls"`
 }
 
 // String is not required by pop and may be deleted
