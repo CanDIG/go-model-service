@@ -1,10 +1,13 @@
 #!/bin/bash
 
-#TODO make this a makefile instead?
+# TODO make this a makefile instead?
 
 # Create a Postgres development database and migrate it to the schema
 # defined in the model-vs/data directory, using the soda tool from pop.
-# wait-for-it waits for the Postgres DB to be ready to accept connections.
+# The willingness of the postgres socket to accept TCP connection does not
+# necessarily indicate database readiness. Hence, the pg_isready check below.
+# Read more about containerized postgres readiness:
+# 	https://github.com/docker-library/postgres/issues/146
 
 docker-compose exec gms-webapp sh -c \
 	"until pg_isready --timeout=60 --username=$POSTGRES_USER --host=database; \
