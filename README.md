@@ -2,7 +2,7 @@
 
 Based on Jonathan Dursi's [OpenAPI variant service demo](https://github.com/ljdursi/openapi_calls_example), this toy service demonstrates the go-swagger/pop stack with CanDIG API best practicNote that most auto-generated code, including binary files such as `main`, have been excluded from this repository. The exclusion of these files is considered to be best practice for repository maintenance. However, one-time auto-generated files that are *not* re-generated (and are therefore safe to edit) should be pushed to this repository. `model-vs/api/restapi/configure_variant_service.go` and the `model-vs/data/models` package are examples of such safe-to-edit auto-generated code.es.
 
-[![Build Status](https://travis-ci.org/CanDIG/go-model-service.svg?branch=master)](https://travis-ci.org/CanDIG/go-model-service)
+[![Build Status](https://travis-ci.org/CanDIG/go-model-service.svg?branch=main)](https://travis-ci.org/CanDIG/go-model-service)
 [![Go Report Card](https://goreportcard.com/badge/github.com/candig/go-model-service)](https://goreportcard.com/report/github.com/candig/go-model-service)
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
@@ -126,4 +126,4 @@ Alternately, you can `curl` requests to the service from the command line, ex.:
 
 Note that most auto-generated code, including binary files such as `main`, are intentionally excluded from this repository.
 
-If you would like to learn more about using this stack, especially with regards to its code-generation components, please take a look at the [DEVELOPER-GUIDE.md](https://github.com/CanDIG/go-model-service/blob/master/docs/DEVELOPER-GUIDE.md).
+If you would like to learn more about using this stack, especially with regards to its code-generation components, please take a look at the [DEVELOPER-GUIDE.md](https://github.com/CanDIG/go-model-service/blob/main/docs/DEVELOPER-GUIDE.md).
