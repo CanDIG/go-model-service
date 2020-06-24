@@ -9,6 +9,9 @@ import (
 	"time"
 )
 
+// Call : 	The ORM-side representation of the Call data object.
+// 			A single variant call on a single individual.
+// 			Contains some unique data, but is essentially the many-to-many association between variants and individuals.
 type Call struct {
 	ID           uuid.UUID   `json:"id" db:"id"`
 	CreatedAt    time.Time   `json:"created_at" db:"created_at"`

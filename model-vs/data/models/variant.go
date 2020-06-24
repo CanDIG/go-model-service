@@ -11,6 +11,8 @@ import (
 	"time"
 )
 
+// Variant : 	The ORM-side representation of the Variant data object.
+// 				A single variant, which may be called in many individuals in the variant service.
 type Variant struct {
 	ID          uuid.UUID   `json:"id" db:"id"`
 	CreatedAt   time.Time   `json:"created_at" db:"created_at"`
