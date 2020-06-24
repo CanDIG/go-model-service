@@ -10,13 +10,15 @@ import (
 )
 
 type Call struct {
-	ID         uuid.UUID `json:"id" db:"id"`
-	CreatedAt  time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt  time.Time `json:"updated_at" db:"updated_at"`
-	Individual uuid.UUID `json:"individual_id" db:"individual_id"`
-	Variant    uuid.UUID `json:"variant_id" db:"variant_id"`
-	Genotype   string    `json:"genotype" db:"genotype"`
-	Format     string    `json:"format" db:"format"`
+	ID           uuid.UUID   `json:"id" db:"id"`
+	CreatedAt    time.Time   `json:"created_at" db:"created_at"`
+	UpdatedAt    time.Time   `json:"updated_at" db:"updated_at"`
+	IndividualID uuid.UUID   `json:"individual_id" db:"individual_id"`
+	Individual   *Individual `json:"individual" belongs_to:"individual"`
+	VariantID    uuid.UUID   `json:"variant_id" db:"variant_id"`
+	Variant      *Variant    `json:"variant" belongs_to:"variant"`
+	Genotype     string      `json:"genotype" db:"genotype"`
+	Format       string      `json:"format" db:"format"`
 }
 
 // String is not required by pop and may be deleted
@@ -38,8 +40,8 @@ func (c Calls) String() string {
 // This method is not required and may be deleted.
 func (c *Call) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
-		&validators.UUIDIsPresent{Field: c.Individual, Name: "Individual"},
-		&validators.UUIDIsPresent{Field: c.Variant, Name: "Variant"},
+		&validators.UUIDIsPresent{Field: c.IndividualID, Name: "IndividualID"},
+		&validators.UUIDIsPresent{Field: c.VariantID, Name: "VariantID"},
 		&validators.StringIsPresent{Field: c.Genotype, Name: "Genotype"},
 	), nil
 }

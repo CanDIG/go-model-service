@@ -102,7 +102,7 @@ For example, if you add a `province` column to the `individual` table in a migra
 
 #### Representing Associations with Pop
 
-Associations between data resources should be indicated in both a `.fizz` (or `.sql`) migration file and in the pop models for the affected resources. One benefit of maintaining accurate associations in your pop models is that you can benefit from pop's [Eager association (pre)loading](https://gobuffalo.io/en/docs/db/relations#loading-associations) functionality. Here are some useful guides for writing [1-to-1](https://blog.gobuffalo.io/associations-with-pop-1-to-1-592f02e2bdd8) and [1-to-n](https://blog.gobuffalo.io/associations-with-pop-1-to-n-2fb3e1c3833f) associations in Pop.
+Associations between data resources should be specified in terms of a foreign key in the owning resource's `.fizz` (or `.sql`) migration file. Associations should also be specified in the pop models for all affected resources. One benefit of maintaining accurate associations in your pop models is that you can benefit from pop's [Eager association creation and (pre)loading](https://gobuffalo.io/en/docs/db/relations#loading-associations) functionality. Here are some useful guides for writing [1-to-1](https://blog.gobuffalo.io/associations-with-pop-1-to-1-592f02e2bdd8) and [1-to-n](https://blog.gobuffalo.io/associations-with-pop-1-to-n-2fb3e1c3833f) associations in Pop. More information about association tags used in pop models, such as `many_to_many`, can be found in the [docs](https://gobuffalo.io/en/docs/db/relations#available-struct-tags).
 
 ### Validating Pop Models
 

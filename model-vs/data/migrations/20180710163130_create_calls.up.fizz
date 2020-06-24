@@ -1,7 +1,9 @@
 create_table("calls") {
 	t.Column("id", "uuid", {"primary": true})
 	t.Column("individual_id", "uuid", {})
+	t.ForeignKey("individual_id", {"individuals": ["id"]}, {})
 	t.Column("variant_id", "uuid", {})
+	t.ForeignKey("variant_id", {"variants": ["id"]}, {})
 	t.Column("genotype", "string", {})
 	t.Column("format", "string", {})
 }

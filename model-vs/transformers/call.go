@@ -9,8 +9,8 @@ import (
 
 // CallDataToAPI contains the model-building step of the api-model-to-data-model transformer.
 func CallDataToAPI(dataCall datamodels.Call) (*apimodels.Call, error) {
-	apiIndividualID := strfmt.UUID(dataCall.Individual.String())
-	apiVariantID := strfmt.UUID(dataCall.Variant.String())
+	apiIndividualID := strfmt.UUID(dataCall.IndividualID.String())
+	apiVariantID := strfmt.UUID(dataCall.VariantID.String())
 
 	return &apimodels.Call{
 		ID:           strfmt.UUID(dataCall.ID.String()),
@@ -33,8 +33,8 @@ func CallAPIToData(apiCall apimodels.Call) (*datamodels.Call, error) {
 	}
 
 	return &datamodels.Call{
-		Individual: *dataIndividualID,
-		Variant:    *dataVariantID,
-		Genotype:   *apiCall.Genotype,
-		Format:     stringValueOrZero(apiCall.Format)}, nil // Format is not a required field, may be nil
+		IndividualID: *dataIndividualID,
+		VariantID:    *dataVariantID,
+		Genotype:     *apiCall.Genotype,
+		Format:       stringValueOrZero(apiCall.Format)}, nil // Format is not a required field, may be nil
 }
