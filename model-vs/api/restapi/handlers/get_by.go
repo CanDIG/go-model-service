@@ -14,7 +14,7 @@ import (
 
 	"github.com/CanDIG/go-model-service/model-vs/errors"
 
-	"github.com/CanDIG/go-model-service/tools/log"
+	"github.com/CanDIG/go-model-service/utilities/log"
 )
 
 // GetIndividualsByVariant returns all Individuals with a given Variant called.

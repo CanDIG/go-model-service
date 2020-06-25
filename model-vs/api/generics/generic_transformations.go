@@ -9,7 +9,7 @@ import (
 	datamodels "github.com/CanDIG/go-model-service/model-vs/data/models"
 	"github.com/CanDIG/go-model-service/model-vs/errors"
 	"github.com/CanDIG/go-model-service/model-vs/transformers"
-	"github.com/CanDIG/go-model-service/tools/log"
+	"github.com/CanDIG/go-model-service/utilities/log"
 	"github.com/gobuffalo/pop"
 )
 

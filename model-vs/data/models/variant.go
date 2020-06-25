@@ -2,7 +2,7 @@ package models
 
 import (
 	"encoding/json"
-	customValidators "github.com/CanDIG/go-model-service/tools/validators"
+	customValidators "github.com/CanDIG/go-model-service/utilities/validators"
 	"github.com/gobuffalo/nulls"
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"

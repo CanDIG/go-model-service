@@ -11,7 +11,7 @@ import (
 
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/handlers"
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/operations"
-	"github.com/CanDIG/go-model-service/tools/log"
+	"github.com/CanDIG/go-model-service/utilities/log"
 )
 
 //go:generate swagger generate server --target .. --name model-vs --spec ../swagger.yml

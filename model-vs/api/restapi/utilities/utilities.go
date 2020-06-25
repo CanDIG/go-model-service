@@ -6,7 +6,7 @@ package utilities
 import (
 	apimodels "github.com/CanDIG/go-model-service/model-vs/api/models"
 	"github.com/CanDIG/go-model-service/model-vs/errors"
-	"github.com/CanDIG/go-model-service/tools/log"
+	"github.com/CanDIG/go-model-service/utilities/log"
 	"github.com/gobuffalo/pop"
 	"net/http"
 )

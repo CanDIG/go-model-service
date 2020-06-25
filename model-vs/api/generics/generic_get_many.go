@@ -6,7 +6,7 @@ import (
 	"github.com/CanDIG/go-model-service/model-vs/api/restapi/utilities"
 	datamodels "github.com/CanDIG/go-model-service/model-vs/data/models"
 	"github.com/CanDIG/go-model-service/model-vs/errors"
-	"github.com/CanDIG/go-model-service/tools/log"
+	"github.com/CanDIG/go-model-service/utilities/log"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/sirupsen/logrus"
 )
