@@ -10,7 +10,7 @@ WORKDIR /go/src/github.com/CanDIG/go-model-service
 COPY . .
 
 # Check that all dependencies are present.
-# See `./Dockerfile-gms-deps-v1` for more information.
+# See `./gms-deps.Dockerfile` for more information.
 RUN go mod download
 
 # Swagger generate the boilerplate code necessary for handling API requests

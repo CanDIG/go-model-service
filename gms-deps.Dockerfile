@@ -1,9 +1,9 @@
 ### This is Dockerfile builds the stack & dependencies for the go-model-service
 
 # Build from project root and push to Docker Hub:
-# 	docker login && ./push-image.sh -b -f ./Dockerfile-gms-deps -u <username> gms-deps <patch>
+# 	docker login && ./push-image.sh -b -f ./gms-deps.Dockerfile -u <username> gms-deps <patch>
 # Alternately, build locally without pushing:
-# 	docker build -t <username>/gms-webapp -f ./Dockerfile-gms-deps
+# 	docker build -t <username>/gms-deps -f ./gms-deps.Dockerfile
 # Run resulting container from project root with:
 # 	docker run -it --rm <username>/gms-deps
 
@@ -32,8 +32,3 @@ RUN go install "$GOPATH"/pkg/mod/github.com/gobuffalo/pop@v4.13.1+incompatible/s
 # Install Postgres client for interfacing with the database
 RUN apt-get update &&\
 	apt-get install -y postgresql-client
-
-# Install shell script that tests and waits on the availability of a TCP port.
-# Helps to manage container dependencies without using docker stack/swarm/kubernetes
-# RUN cp "$GOPATH"/pkg/mod/github.com/vishnubob/wait-for-it@v0.0.0-20200205023206-c096cface5fb/wait-for-it.sh /usr/local/bin/wait-for-it
-# RUN chmod +x /usr/local/bin/wait-for-it
