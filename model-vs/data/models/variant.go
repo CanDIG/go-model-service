@@ -3,8 +3,8 @@ package models
 import (
 	"encoding/json"
 	customValidators "github.com/CanDIG/go-model-service/tools/validators"
+	"github.com/gobuffalo/nulls"
 	"github.com/gobuffalo/pop"
-	"github.com/gobuffalo/pop/nulls"
 	"github.com/gobuffalo/uuid"
 	"github.com/gobuffalo/validate"
 	"github.com/gobuffalo/validate/validators"
@@ -45,7 +45,8 @@ func (v Variants) String() string {
 func (v *Variant) Validate(tx *pop.Connection) (*validate.Errors, error) {
 	return validate.Validate(
 		&validators.StringIsPresent{Field: v.Chromosome, Name: "Chromosome"},
-		&customValidators.IntIsNotNull{Field: v.Start, Name: "Start"},
+		&customValidators.IsNotNull{Field: nulls.Nulls{Value: v.Start}, Name: "Start"},
+		&validators.IntIsGreaterThan{Field: v.Start.Int, Name: "Start", Compared: 0},
 		&validators.StringIsPresent{Field: v.Ref, Name: "Ref"},
 		&validators.StringIsPresent{Field: v.Alt, Name: "Alt"},
 	), nil

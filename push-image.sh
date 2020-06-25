@@ -74,7 +74,7 @@ patch="$2"
 # Optional build-image step
 if [ "$build" = true ]
 then
-  docker build -t $username/$image -f $Dockerfile
+  docker build -t $username/$image -f $Dockerfile .
 fi
 
 # Push image tagged with the semantic versioning system described here: 

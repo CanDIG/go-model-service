@@ -116,7 +116,7 @@ There is some subtlety to representing database tables with Go structs. Since Go
 
 By default, for a db datatype that is pop-converted into a non-nillable type in Go, null-values from the database are transformed into zero-values. For example, the `Chromosome` field of the `Variant` model (in `variant.go`) is of type string, and if a value for `chromosome` is not supplied in an entry, the value of the `Chromosome` field is `""`. The validators that check *required* fields provided in the `validators` package only check for these fields having a non-zero value. Thus, no distinction is made between zero-valued entries such as `0` or `""` and `nil`. **These validators are insufficient for cases where zero-valued entries are acceptable but `nil` entries are not.**
 
-This project uses the `pop/nulls` package to handle non-nullable fields that should be permitted to have zero values, such as the `Start` field of the `Variant` model. This field is of type nulls.Int, which is able to differentiate between null values and zero values. A custom `int_is_not_null.go` validator is needed to validate this datatype.
+This project uses the `pop/nulls` package to handle non-nullable fields that should be permitted to have zero values, such as the `Start` field of the `Variant` model. This field is of type nulls.Int, which is able to differentiate between null values and zero values. A custom `is_not_null.go` validator is needed to validate this datatype, or any other type implementing the `nullable` interface from `pop/nulls`.
 
 ### $POP_PATH
 
