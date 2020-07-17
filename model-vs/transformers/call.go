@@ -7,7 +7,7 @@ import (
 	datamodels "github.com/CanDIG/go-model-service/model-vs/data/models"
 )
 
-// CallDataToAPI contains the model-building step of the api-model-to-data-model transformer.
+// CallDataToAPI contains the model-building step of the data-model-to-api-model transformer.
 func CallDataToAPI(dataCall datamodels.Call) (*apimodels.Call, error) {
 	apiIndividualID := strfmt.UUID(dataCall.IndividualID.String())
 	apiVariantID := strfmt.UUID(dataCall.VariantID.String())
@@ -21,7 +21,7 @@ func CallDataToAPI(dataCall datamodels.Call) (*apimodels.Call, error) {
 		Format:       &dataCall.Format}, nil
 }
 
-// CallAPIToData contains the model-building step of the data-model-to-api-model transformer.
+// CallAPIToData contains the model-building step of the api-model-to-data-model transformer.
 func CallAPIToData(apiCall apimodels.Call) (*datamodels.Call, error) {
 	dataIndividualID, err := uuidAPIToData(*apiCall.IndividualID, "IndividualID")
 	if err != nil {

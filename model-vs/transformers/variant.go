@@ -13,7 +13,7 @@ import (
 	"github.com/gobuffalo/pop/nulls"
 )
 
-// VariantDataToAPI contains the model-building step of the api-model-to-data-model transformer.
+// VariantDataToAPI contains the model-building step of the data-model-to-api-model transformer.
 func VariantDataToAPI(dataVariant datamodels.Variant) (*apimodels.Variant, error) {
 	startNonNullable, ok := dataVariant.Start.Interface().(int)
 	if !ok {
@@ -31,7 +31,7 @@ func VariantDataToAPI(dataVariant datamodels.Variant) (*apimodels.Variant, error
 		Alt:        &dataVariant.Alt}, nil
 }
 
-// VariantAPIToData contains the model-building step of the data-model-to-api-model transformer.
+// VariantAPIToData contains the model-building step of the api-model-to-data-model transformer.
 func VariantAPIToData(apiVariant apimodels.Variant) (*datamodels.Variant, error) {
 	return &datamodels.Variant{
 		Name:       stringValueOrZero(apiVariant.Name), // Name is not a required field, may be nil

@@ -21,7 +21,7 @@ type Call struct {
 	VariantID    uuid.UUID   `json:"variant_id" db:"variant_id"`
 	Variant      *Variant    `json:"variant" belongs_to:"variant"`
 	Genotype     string      `json:"genotype" db:"genotype"`
-	Format       string      `json:"format" db:"format"`
+	Format       string      `json:"format,omitempty" db:"format"`
 }
 
 // String is not required by pop and may be deleted

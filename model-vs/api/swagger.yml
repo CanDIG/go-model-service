@@ -18,8 +18,8 @@
 consumes:
 - application/json
 info:
+  title: A toy service for variant calls
   description: A model variant service demonstarting CanDIG API best practices
-  title: A barebones service for variant calls
   version: 1.0.0
 basePath: /v1
 produces:

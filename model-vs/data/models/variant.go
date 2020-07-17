@@ -17,12 +17,12 @@ type Variant struct {
 	ID          uuid.UUID   `json:"id" db:"id"`
 	CreatedAt   time.Time   `json:"created_at" db:"created_at"`
 	UpdatedAt   time.Time   `json:"updated_at" db:"updated_at"`
-	Name        string      `json:"name" db:"name"`
+	Name        string      `json:"name,omitempty" db:"name"`
 	Chromosome  string      `json:"chromosome" db:"chromosome"`
 	Start       nulls.Int   `json:"start" db:"start"`
 	Ref         string      `json:"ref" db:"ref"`
 	Alt         string      `json:"alt" db:"alt"`
-	Individuals Individuals `json:"individuals" many_to_many:"calls"`
+	Individuals Individuals `json:"individuals,omitempty" many_to_many:"calls"`
 }
 
 // String is not required by pop and may be deleted

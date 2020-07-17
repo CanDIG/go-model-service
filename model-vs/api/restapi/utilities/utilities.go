@@ -15,7 +15,7 @@ import (
 func ConnectDevelopment(HTTPRequest *http.Request) (*pop.Connection, *apimodels.Error) {
 	tx, err := pop.Connect("development")
 	if err != nil {
-		log.Write(HTTPRequest, 500000, err).Error("Failed to connect to database: development")
+		log.Write(HTTPRequest, 500000, err).Error("Failed to connect to database")
 		errPayload := errors.DefaultInternalServerError()
 		return nil, errPayload
 	}

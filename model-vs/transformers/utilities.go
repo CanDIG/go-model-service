@@ -30,7 +30,7 @@ func stringValueOrZero(pointer *string) string {
 	return *pointer
 }
 
-// stringValueOrZero converts a pointer to an int to its constituent int, but handles nil pointers
+// intValueOrZero converts a pointer to an int to its constituent int, but handles nil pointers
 // better than a simple * conversion by converting the nil values to 0 (int zero value.)
 func intValueOrZero(pointer *int) int {
 	if pointer == nil {
@@ -40,7 +40,7 @@ func intValueOrZero(pointer *int) int {
 	return *pointer
 }
 
-// stringValueOrZero converts a pointer to an boolean to its constituent boolean, but handles nil pointers
+// boolValueOrZero converts a pointer to an boolean to its constituent boolean, but handles nil pointers
 // better than a simple * conversion by converting the nil values to false (boolean zero value.)
 func boolValueOrZero(pointer *bool) bool {
 	if pointer == nil {

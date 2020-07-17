@@ -55,7 +55,7 @@ func individualAPIToDataModel(apiIndividual apimodels.Individual, HTTPRequest *h
 
 	validationErrors, err := dataIndividual.Validate(tx)
 	if err != nil {
-		log.Write(HTTPRequest, 500000, err).Error("Data schema validation for data-model Variant failed upon transformation with the following validation errors:\n" +
+		log.Write(HTTPRequest, 500000, err).Error("Data schema validation for data-model Individual failed upon transformation with the following validation errors:\n" +
 			validationErrors.Error())
 		errPayload := errors.DefaultInternalServerError()
 		return nil, errPayload

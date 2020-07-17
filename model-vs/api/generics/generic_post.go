@@ -13,15 +13,8 @@ import (
 // PostIndividual processes a Individual posted by the API request and creates it into the database.
 // It then retrieves the newly created Individual from the database and returns it, along with its URL location.
 func PostIndividual(params operations.PostIndividualParams) middleware.Responder {
-	tx, errPayload := utilities.ConnectDevelopment(params.HTTPRequest)
-	if errPayload != nil {
-		return operations.NewPostIndividualInternalServerError().WithPayload(errPayload)
-	}
-
-	_, err := utilities.GetIndividualByID(params.Individual.ID.String(), tx)
-	if err == nil { //TODO this is not a great check
-		message := "This Individual already exists in the database. " +
-			"It cannot be overwritten with POST; please use PUT instead."
+	if params.Individual.ID.String() != "" {
+		message := "Individual cannot be overwritten with POST; please either use PUT, or remove id property from POST request."
 		code := 405001
 
 		log.Write(params.HTTPRequest, code, nil).Warn(message)
@@ -29,12 +22,17 @@ func PostIndividual(params operations.PostIndividualParams) middleware.Responder
 		return operations.NewPostIndividualMethodNotAllowed().WithPayload(errPayload)
 	}
 
+	tx, errPayload := utilities.ConnectDevelopment(params.HTTPRequest)
+	if errPayload != nil {
+		return operations.NewPostIndividualInternalServerError().WithPayload(errPayload)
+	}
+
 	newIndividual, errPayload := individualAPIToDataModel(*params.Individual, params.HTTPRequest, tx)
 	if errPayload != nil {
 		return operations.NewPostIndividualInternalServerError().WithPayload(errPayload)
 	}
 
-	err = tx.Create(newIndividual)
+	err := tx.Create(newIndividual)
 	if err != nil {
 		log.Write(params.HTTPRequest, 500000, err).Error("Create into database failed")
 		errPayload := errors.DefaultInternalServerError()
