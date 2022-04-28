@@ -2,6 +2,10 @@
 
 Based on Jonathan Dursi's [OpenAPI variant service demo](https://github.com/ljdursi/openapi_calls_example), this toy service demonstrates the go-swagger/pop stack with CanDIG API best practicNote that most auto-generated code, including binary files such as `main`, have been excluded from this repository. The exclusion of these files is considered to be best practice for repository maintenance. However, one-time auto-generated files that are *not* re-generated (and are therefore safe to edit) should be pushed to this repository. `model-vs/api/restapi/configure_variant_service.go` and the `model-vs/data/models` package are examples of such safe-to-edit auto-generated code.es.
 
+This repository is archived, left for reference only.
+
+See the `assorted-fixes` branch for some unsorted improvements that were stashed prior to the main developer's exit from the organization.
+
 [![Build Status](https://travis-ci.org/CanDIG/go-model-service.svg?branch=main)](https://travis-ci.org/CanDIG/go-model-service)
 [![Go Report Card](https://goreportcard.com/badge/github.com/candig/go-model-service)](https://goreportcard.com/report/github.com/candig/go-model-service)
 
