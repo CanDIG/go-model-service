@@ -2,7 +2,7 @@
 ### excluding the database which is built seperately.
 
 # Modify this line if you want to use a different stack/dependencies-image
-FROM katpavlov/gms-deps AS webapp
+FROM candig/gms-deps AS webapp
 
 ARG API_PATH
 

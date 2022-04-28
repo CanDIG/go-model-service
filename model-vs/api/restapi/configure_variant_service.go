@@ -27,12 +27,6 @@ func configureAPI(api *operations.VariantServiceAPI) http.Handler {
 	// configure the api here
 	api.ServeError = errors.ServeError
 
-	// Set your custom logger if needed. Default one is log.Printf
-	// Expected interface func(string, ...interface{})
-	//
-	// Example:
-	// api.Logger = log.Printf
-
 	api.JSONConsumer = runtime.JSONConsumer()
 
 	api.JSONProducer = runtime.JSONProducer()

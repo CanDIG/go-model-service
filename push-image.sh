@@ -22,7 +22,7 @@ help ()
    echo "   -M      Major version (semantic). Default: 1"
    echo "   -m      minor version (semantic). Default: 1"
    echo "   -f      Dockerfile filename. Default: ./Dockerfile"
-   echo "   -u      Docker username. Default: katpavlov"
+   echo "   -u      Docker username/organization name to push to. Default: candig"
    echo
 }
 
@@ -32,8 +32,8 @@ help ()
 ################################################################################
 ################################################################################
 
-# Default Docker username. Can overwrite with -u argument.
-username="katpavlov"
+# Default Docker username/organization name to push to. Can overwrite with -u argument.
+username="candig"
 # Default image version. Can overwrite with -M -m -p arguments.
 Major="1"
 minor="1"

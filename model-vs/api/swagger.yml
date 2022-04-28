@@ -99,6 +99,7 @@ paths:
       summary: Add a variant to the database
       parameters:
         - name: variant
+          description: Variant to post
           in: body
           schema:
             $ref: '#/definitions/Variant'
@@ -129,9 +130,24 @@ paths:
       operationId: get_variants
       summary: Get variants by genomic location
       parameters:
-        - $ref: '#/parameters/chromosome'
-        - $ref: '#/parameters/start'
-        - $ref: '#/parameters/end'
+        - name: chromosome
+          description: Chromosome to search
+          in: query
+          type: string
+          pattern: "^[a-zA-Z0-9]*$"
+          x-example: "chr1"
+        - name: start
+          description: Position from which to begin search
+          in: query
+          type: integer
+          minimum: 1
+          x-example: 10000
+        - name: end
+          description: Position at which to end search
+          in: query
+          type: integer
+          minimum: 1
+          x-example: 20000
       responses:
         200:
           description: Return variants
@@ -306,30 +322,6 @@ parameters:
     x-example: bf3ba75b-8dfe-4619-b832-31c4a087a589
     required: true
 
-  chromosome:
-    name: chromosome
-    description: Chromosome to search
-    in: query
-    type: string
-    pattern: "^[a-zA-Z0-9]*$"
-    x-example: "chr1"
-
-  start:
-    name: start
-    description: Position from which to begin search
-    in: query
-    type: integer
-    minimum: 1
-    x-example: 10000
-
-  end:
-    name: end
-    description: Position at which to end search
-    in: query
-    type: integer
-    minimum: 1
-    x-example: 20000
-
 definitions:
   Error:
     type: object
@@ -338,8 +330,14 @@ definitions:
     properties: 
       code:
         type: integer
+        minimum: 100000
+        maximum: 599999
+        description: Computer-readable error code, format 'HHHDDD' where HHH is the HTTP code and DDD is the error-specific detail codes
+        example: 500001
       message:
         type: string
+        description: Human-readable informational error message
+        example: "Forbidden to modify existing default consent on post"
   Individual:
     type: object
     required:

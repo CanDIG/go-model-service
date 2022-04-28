@@ -22,9 +22,9 @@ Based on Jonathan Dursi's [OpenAPI variant service demo](https://github.com/ljdu
 ## Quick Start
 
 1. Install [Docker v18.06.0+](https://docs.docker.com/get-docker/) and [Docker Compose v3.7+](https://docs.docker.com/compose/install/). You can check which version, if any, is already installed by running `docker --version` and `docker-compose --version`. Any versions greater than or equal to the ones stated here should do.
-2. Checkout this go-model-service repository:
+2. Clone this go-model-service repository:
   ```
-  git checkout https://github.com/CanDIG/go-model-service.git
+  git clone https://github.com/CanDIG/go-model-service.git
   cd go-model-service
   ```
 3. Set up the build environment by generating a `.env` file for Docker Compose to use:
@@ -64,7 +64,7 @@ The `gms-webapp` image built from `./Dockerfile` depends upon the `gms-deps` ima
 
 The stack and project dependencies image `gms-deps` can be pulled from `katpavlov/gms-deps`. Alternately, it can be built and run locally with the following commands:
   ```
-  docker build -t <username>/gms-webapp -f ./Dockerfile-gms-deps
+  docker build -t <username>/gms-deps -f ./Dockerfile-gms-deps
   docker run -it --rm <username>/gms-deps
   ```
 
